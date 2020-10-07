@@ -1,0 +1,51 @@
+{
+  "name": "ohogames-base-layaair",
+  "version": "1.0.0",
+  "description": "> A ohogames base library of layaair 1.x",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "webpack --config webpack.dev.js --watch",
+    "build": "webpack --config webpack.prod.js",
+    "test": "echo 'no tests'",
+    "preversion": "npm test",
+    "version": "npm run build && git add -A dist",
+    "postversion": "git push origin master && git push origin --tags"
+  },
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iqudoo/ohogames-base-layaair.git"
+  },
+  "bugs": {
+    "url": "https://github.com/iqudoo/ohogames-base-layaair/issues"
+  },
+  "homepage": "https://github.com/iqudoo/ohogames-base-layaair#readme",
+  "engines": {
+    "node": ">= 0.10"
+  },
+  "keywords": [
+    "layaair",
+    "ohogames",
+    "ohogames-base",
+    "ohogames-base-layaair"
+  ],
+  "files": [
+    "dist",
+    "types"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "babel-core": "6.26.3",
+    "babel-loader": "7.1.4",
+    "babel-plugin-transform-class-properties": "6.24.1",
+    "babel-preset-env": "1.7.0",
+    "fs-extra": "^6.0.1",
+    "string-replace-loader": "^2.1.1",
+    "ts-loader": "^4.4.1",
+    "typescript": "2.9.2",
+    "uglifyjs-webpack-plugin": "^1.2.2",
+    "webpack": "^4.19.1",
+    "webpack-cli": "^3.1.0"
+  }
+}
