@@ -6,6 +6,7 @@
   "scripts": {
     "start": "webpack --config webpack.dev.js --watch",
     "build": "webpack --config webpack.prod.js",
+    "push": "git push origin master && git push origin --tags",
     "test": "echo 'no tests'",
     "preversion": "npm test",
     "version": "npm run build && git add -A dist",
