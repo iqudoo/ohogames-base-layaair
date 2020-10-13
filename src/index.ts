@@ -16,12 +16,15 @@ import toast from "./services/display/toastmanager";
 import Activity from "./services/display/activity";
 import PopupView from "./services/display/popupview";
 import ToastView from "./services/display/toastview";
+import lifecycle from "./services/lifecycle";
+import { getQueryString } from "./utils/query";
 import { init, init3D, start } from './services/init';
 
-const OHOGame = {
+const OHOGame = Object.assign({}, lifecycle, {
     init,
     init3D,
     start,
+    getQueryString,
     env,
     bg,
     eft,
@@ -38,7 +41,7 @@ const OHOGame = {
     Activity,
     PopupView,
     ToastView,
-}
+});
 
 if (typeof window !== "undefined") {
     (window as any).OHOGame = OHOGame;

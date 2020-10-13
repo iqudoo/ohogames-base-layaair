@@ -32,6 +32,7 @@ declare module OHOGame {
         mainPage?: any;
         commonRes?: { url: string, type: string }[];
         fileVersion?: string;
+        vConsole?: boolean,
         onLoadProgress?: (progress: number) => void;
         onLoaded?: () => void;
     }
@@ -61,6 +62,16 @@ declare module OHOGame {
     function init3D(width: number, height: number, ...options): void;
     /** start */
     function start(options: StartOptions | any, onLoaded?: () => void, onLoadProgress?: (progress: number) => void): void;
+    /** 监听页面回到前台 */
+    function onShow(showListener: () => void): void;
+    /** 取消监听页面回到前台 */
+    function offShow(showListener: () => void): void;
+    /** 监听页面退到后台 */
+    function onHide(hideListener: () => void): void;
+    /** 取消监听页面退到后台 */
+    function offHide(hideListener: () => void): void;
+    /** 获取地址中带的参数 */
+    function getQueryString(key: string): string;
 
     /** env */
     module env {
