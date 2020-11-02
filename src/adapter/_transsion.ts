@@ -3,7 +3,7 @@ import hook from '../services/hook';
 // loader
 if (Laya && Laya.Loader) {
   var Handler = Laya.Handler;
-  var Loader = Laya.Loader;
+  var Loader: any = Laya.Loader;
   var HttpRequest = Laya.HttpRequest;
   var __proto = Loader.prototype;
   __proto.load = function (url, type, cache, group, ignoreCache) {
@@ -86,8 +86,9 @@ if (Laya && Laya.Loader) {
   }
 }
 
+// ui
 hook.onInit((width, height) => {
-  if (typeof window['getAdapterInfo'] !== "undefined") {
+  if (typeof window !== "undefined" && typeof window['getAdapterInfo'] !== "undefined") {
     var stage = Laya.stage;
     var info = window['getAdapterInfo']({ width, height, scaleMode: Laya.stage.scaleMode });
     stage.width = info.rw;

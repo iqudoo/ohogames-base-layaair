@@ -7,10 +7,10 @@ declare module OHOGame {
 
     /** ActivityOptions */
     interface ActivityOptions {
-        /** res */
-        res?: { url: string, type: string }[];
         /** single */
         single?: boolean;
+        /** res */
+        res?: { url: string, type: string }[];
         /** ui */
         ui?: any;
         /** activity on focus change */
@@ -139,6 +139,8 @@ declare module OHOGame {
         function getOffestY(): number;
         /** setDeviation */
         function setDeviation(deviation: number): void;
+        /** setAdaption */
+        function setAdaption(adaption: boolean): void;
     }
 
     /** audio */

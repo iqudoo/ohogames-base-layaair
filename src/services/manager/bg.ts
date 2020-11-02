@@ -1,50 +1,52 @@
-import screen from "./screen";
-
 let _bgSprite: Laya.Sprite = null;
 let _bgImage: Laya.Image = null;
 let _bgSkin = null;
 let _bgSizeGrid = null;
+let _inited = false;
+
+function _checkInit() {
+    if (!_inited) {
+        _inited = true;
+        _bgSprite = new Laya.Sprite;
+        _bgSprite.name = '_tape_bg_layer';
+        _bgImage = new Laya.Image;
+        _bgImage.name = '_bg_image';
+        Laya.stage.addChild(_bgSprite);
+        Laya.stage.addChild(_bgImage);
+        Laya.stage.on(Laya.Event.RESIZE, null, () => {
+            _resizeBg();
+        });
+    }
+    _resizeBg();
+}
+
 
 function _drawSkin() {
-    if (_bgImage && _bgSkin) {
-        _bgImage.skin = _bgSkin;
-    }
-    if (_bgImage && _bgSizeGrid) {
-        _bgImage.sizeGrid = _bgSizeGrid;
-    } else {
-        _bgImage.sizeGrid = '';
+    if (_bgImage) {
+        if (_bgSkin) {
+            _bgImage.skin = _bgSkin;
+        }
+        if (_bgSizeGrid) {
+            _bgImage.sizeGrid = _bgSizeGrid;
+        } else {
+            _bgImage.sizeGrid = '';
+        }
     }
 }
 
-export function resizeBg() {
+function _resizeBg() {
     if (_bgSprite) {
-        _bgSprite.width = screen.getWidth();
-        _bgSprite.height = screen.getHeight();
+        _bgSprite.width = Laya.stage.width;
+        _bgSprite.height = Laya.stage.width;
     }
     if (_bgImage) {
-        _bgImage.width = screen.getWidth();
-        _bgImage.height = screen.getHeight();
+        _bgImage.width = Laya.stage.width;
+        _bgImage.height = Laya.stage.width;
     }
 }
 
 export function initBg() {
-    _bgSprite = Laya.stage.getChildByName('_tape_bg_layer') as Laya.Sprite;
-    if (!_bgSprite) {
-        _bgSprite = new Laya.Sprite;
-        _bgSprite.name = '_tape_bg_layer';
-        Laya.stage.addChild(_bgSprite);
-
-        _bgImage = new Laya.Image;
-        _bgImage.name = '_bg_image';
-        _bgSprite.addChild(_bgImage);
-    }
-
-    _bgSprite.width = screen.getWidth();
-    _bgSprite.height = screen.getHeight();
-
-    _bgImage.width = screen.getWidth();
-    _bgImage.height = screen.getHeight();
-
+    _checkInit();
     _drawSkin();
 }
 
