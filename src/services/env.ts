@@ -34,25 +34,28 @@ function getVersion(): string {
 /////  Debug
 //////////////////////////
 
-let _debugOn = true;
+let _debugOn = '${debug}';
 
 function isDebug() {
+    if (_debugOn.indexOf('${') === 0) {
+        return false;
+    }
     return _debugOn;
 }
 
-function setDebug(on: boolean) {
-    _debugOn = on;
+function setDebug(debug) {
+    _debugOn = debug;
 }
 
 function printDebug(message: any, ...options) {
-    if (_debugOn) {
-        console.log("OHOGame:", message, ...options);
+    if (isDebug()) {
+        console.log("[OHOGame] ", message, ...options);
     }
 }
 
 function printError(message: any, ...options) {
-    if (_debugOn) {
-        console.error("OHOGame:", message, ...options);
+    if (isDebug()) {
+        console.error("[OHOGame] ", message, ...options);
     }
 }
 
@@ -67,7 +70,7 @@ function setEnv(env) {
 }
 
 function getEnv() {
-    if (_env == "${env}") {
+    if (_env.indexOf('${') === 0) {
         return "dev";
     }
     return _env;
