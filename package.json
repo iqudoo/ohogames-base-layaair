@@ -1,6 +1,6 @@
 {
   "name": "ohogames-base-layaair",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "> A ohogames base library of layaair 1.x",
   "main": "dist/index.js",
   "scripts": {
