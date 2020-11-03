@@ -1,4 +1,4 @@
-import env from "../utils/env";
+import env from "./env";
 import { initScreen } from "./manager/screen";
 import { initNavigator, setNavigatorReady } from "./navigator/init";
 import { callHookInit } from "./hook";

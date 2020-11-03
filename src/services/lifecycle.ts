@@ -1,7 +1,7 @@
 import { onload } from "../utils/onload";
 import { onVisibility, fixVisibility } from "../utils/visibility";
 import { callHookShow, callHookHide } from "./hook";
-import env from "../utils/env";
+import env from "./env";
 
 let _isshow = false;
 let _caller_show = null;

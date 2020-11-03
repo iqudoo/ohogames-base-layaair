@@ -1,3 +1,6 @@
+
+import Screen from "./screen";
+
 let _bgSprite: Laya.Sprite = null;
 let _bgImage: Laya.Image = null;
 let _bgSkin = null;
@@ -36,12 +39,12 @@ function _drawSkin() {
 
 function _resizeBg() {
     if (_bgSprite) {
-        _bgSprite.width = Laya.stage.width;
-        _bgSprite.height = Laya.stage.width;
+        _bgSprite.width = Screen.getWidth();
+        _bgSprite.height = Screen.getHeight();
     }
     if (_bgImage) {
-        _bgImage.width = Laya.stage.width;
-        _bgImage.height = Laya.stage.width;
+        _bgImage.width = Screen.getWidth();
+        _bgImage.height = Screen.getHeight();
     }
 }
 

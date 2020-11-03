@@ -1,4 +1,4 @@
-import env from "../utils/env";
+import env from "./env";
 import loop from "../utils/looper";
 
 function fixWechatAudioPlay(callback: Function) {

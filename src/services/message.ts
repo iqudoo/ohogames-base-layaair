@@ -1,4 +1,4 @@
-import env from "../utils/env";
+import env from "./env";
 import { toAny } from "../utils/any";
 
 let _listeners = [];

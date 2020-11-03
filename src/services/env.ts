@@ -77,9 +77,17 @@ function getEnv() {
 /////  getClassName
 //////////////////////////
 
+let classNameMap = {};
+
 export function getClassName(obj) {
     try {
         if (obj) {
+            if (obj.name) {
+                return obj.name;
+            }
+            if (classNameMap[obj]) {
+                return classNameMap[obj];
+            }
             let str = obj.toString();
             let arr;
             if (str.charAt(0) == '[') {
@@ -91,6 +99,8 @@ export function getClassName(obj) {
             if (arr && arr.length == 2) {
                 name = arr[1];
             }
+            classNameMap[obj] = name;
+            return name;
         }
     } catch (e) {
     }
