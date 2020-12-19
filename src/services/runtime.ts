@@ -38,7 +38,7 @@ module runtime {
             onUp && onUp();
             viewScale(view, scaleBigValue);
         });
-        view.on(Laya.Event.MOUSE_UP, view, () => {
+        view.on(Laya.Event.MOUSE_OUT, view, () => {
             onOut && onOut();
             viewScale(view, scaleBigValue);
         });
