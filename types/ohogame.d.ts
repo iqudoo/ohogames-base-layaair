@@ -202,7 +202,7 @@ declare module OHOGame {
         /** scaleBigValue */
         let scaleBigValue: number;
         /** bindClick */
-        function bindClick(view): void;
+        function bindClick(view, onClick?: () => void, onDown?: () => void, onUp?: () => void, onOut?: () => void): void;
         /** btn */
         class btn extends Laya.Button {
             public sound: string;

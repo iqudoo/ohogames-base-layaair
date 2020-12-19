@@ -24,12 +24,24 @@ module runtime {
         }
     }
 
-    export function bindClick(view) {
+    export function bindClick(view, onClick?, onDown?, onUp?, onOut?) {
         view.offAll();
-        view.on(Laya.Event.MOUSE_DOWN, view, () => viewScale(view, scaleSmallValue));
-        view.on(Laya.Event.MOUSE_UP, view, () => viewScale(view, scaleBigValue));
-        view.on(Laya.Event.MOUSE_OUT, view, () => viewScale(view, scaleBigValue));
-        view.on(Laya.Event.CLICK, view, () => playClickSound(view.sound));
+        view.on(Laya.Event.CLICK, view, () => {
+            onClick && onClick();
+            playClickSound(view.sound);
+        });
+        view.on(Laya.Event.MOUSE_DOWN, view, () => {
+            onDown && onDown();
+            viewScale(view, scaleSmallValue);
+        });
+        view.on(Laya.Event.MOUSE_UP, view, () => {
+            onUp && onUp();
+            viewScale(view, scaleBigValue);
+        });
+        view.on(Laya.Event.MOUSE_UP, view, () => {
+            onOut && onOut();
+            viewScale(view, scaleBigValue);
+        });
     }
 
     export class btn extends Laya.Button {
