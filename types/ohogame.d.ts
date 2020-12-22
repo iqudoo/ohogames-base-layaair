@@ -240,9 +240,9 @@ declare module OHOGame {
     /** popup */
     module popup {
         /** showPop */
-        function showPopup(pop, params?, onHide?: (pop, result?: any) => void, name?: string): void;
+        function showPopup(pop, params?, onHide?: (pop, result?: any) => void, alias?: string): void;
         /** hidePop */
-        function hidePopup(pop, view?: any, result?: any, name?: string): void;
+        function hidePopup(pop, view?: any, result?: any, alias?: string): void;
     }
 
     /** toast*/
@@ -322,13 +322,13 @@ declare module OHOGame {
     /** PopupView */
     class PopupView extends Laya.Component {
         /** show */
-        static show(params?: any, onHide?: (pop, result?: any) => void, name?: string): void;
+        static show(params?: any, onHide?: (pop, result?: any) => void, alias?: string): void;
         /** signleShow */
-        static signleShow(params?: any, onHide?: (pop, result?: any) => void, name?: string): void;
+        static signleShow(params?: any, onHide?: (pop, result?: any) => void, alias?: string): void;
         /** pipeShow */
-        static pipeShow(params?: any, onHide?: (pop, result?: any) => void, name?: string): void;
+        static pipeShow(params?: any, onHide?: (pop, result?: any) => void, alias?: string): void;
         /** hide */
-        static hide(result?: any, name?: string): void;
+        static hide(result?: any, alias?: string): void;
         /** pop */
         protected pop: any;
         /** ui */

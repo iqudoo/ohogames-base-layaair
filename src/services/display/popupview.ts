@@ -5,28 +5,29 @@ import ui from "./ui";
 
 export default class PopupView extends ui {
 
-    static show(params, onHide, name) {
-        popup.showPopup(this, params, onHide, name);
+    static show(params, onHide, alias) {
+        popup.showPopup(this, params, onHide, alias);
     }
 
-    static signleShow(params, onHide, name) {
-        popup.hidePopup(this, null, null, name);
-        popup.showPopup(this, params, onHide, name);
+    static signleShow(params, onHide, alias) {
+        popup.hidePopup(this, null, null, alias);
+        popup.showPopup(this, params, onHide, alias);
     }
 
-    static pipeShow(params, onHide, name) {
+    static pipeShow(params, onHide, alias) {
         pipeline.put("popup", () => {
             popup.showPopup(this, params, (...args) => {
                 onHide && onHide(...args);
                 pipeline.next("popup");
-            }, name);
+            }, alias);
         })
     }
 
-    static hide(result, name) {
-        popup.hidePopup(this, null, result, name);
+    static hide(result, alias) {
+        popup.hidePopup(this, null, result, alias);
     }
 
+    public alias;
     public popup;
     public params;
     public duration = 500;
@@ -37,17 +38,17 @@ export default class PopupView extends ui {
     public exitProps = null;
     public onShow?(): void;
     public onHide?(): void;
-    public isTranslucent = false;
-    public canceledOnTouchOutside = false;
 
-    public hide(result = null, key = null) {
-        popup.hidePopup(this.popup, this, result, key);
+    public hide(result = null) {
+        popup.hidePopup(this.popup, this, result, this.alias);
     }
 
     constructor() {
         super(() => {
             this.hide();
         });
+        this.isTranslucent = false;
+        this.canceledOnTouchOutside = false;
         this.nonPenetrating = true;
         this.width = screen.getDesignWidth();
         this.height = screen.getDesignHeight();

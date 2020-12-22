@@ -50,10 +50,11 @@ function setDefaultAnim(fromProps, toProps) {
     _toProps = toProps;
 }
 
-function showPopup(popup, params = null, onHide = null, name = "default") {
-    var mapKey = `${name}_${getClassName(popup)}`;
+function showPopup(popup, params = null, onHide = null, alias = "default") {
+    var mapKey = `${alias}_${getClassName(popup)}`;
     let views = _popups[mapKey];
     let view = new popup();
+    view.alias = alias;
     view.popup = popup;
     view.params = params || {};
     view._onHide = onHide;
@@ -67,8 +68,8 @@ function showPopup(popup, params = null, onHide = null, name = "default") {
     _showPopup(view);
 }
 
-function hidePopup(popup, view = null, result = null, name = "default") {
-    var mapKey = `${name}_${getClassName(popup)}`;
+function hidePopup(popup, view = null, result = null, alias = "default") {
+    var mapKey = `${alias}_${getClassName(popup)}`;
     var views = _popups[mapKey];
     if (view) {
         let index = views ? views.indexOf(view) : -1;
