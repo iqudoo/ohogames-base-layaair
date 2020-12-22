@@ -5,21 +5,26 @@ import ui from "./ui";
 
 export default class PopupView extends ui {
 
-    static show(params, onHide) {
-        popup.showPopup(this, params, onHide);
+    static show(params, onHide, name) {
+        popup.showPopup(this, params, onHide, name);
     }
 
-    static pipeShow(params, onHide) {
+    static signleShow(params, onHide, name) {
+        popup.hidePopup(this, null, null, name);
+        popup.showPopup(this, params, onHide, name);
+    }
+
+    static pipeShow(params, onHide, name) {
         pipeline.put("popup", () => {
             popup.showPopup(this, params, (...args) => {
                 onHide && onHide(...args);
                 pipeline.next("popup");
-            });
+            }, name);
         })
     }
 
-    static hide(result) {
-        popup.hidePopup(this, null, result);
+    static hide(result, name) {
+        popup.hidePopup(this, null, result, name);
     }
 
     public popup;
@@ -35,8 +40,8 @@ export default class PopupView extends ui {
     public isTranslucent = false;
     public canceledOnTouchOutside = false;
 
-    public hide(result = null) {
-        popup.hidePopup(this.popup, this, result);
+    public hide(result = null, key = null) {
+        popup.hidePopup(this.popup, this, result, key);
     }
 
     constructor() {

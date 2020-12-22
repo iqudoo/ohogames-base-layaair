@@ -1,3 +1,4 @@
+import { getClassName } from "../env";
 import UIMgr from "../manager/uimgr";
 
 let _popups = {};
@@ -49,8 +50,9 @@ function setDefaultAnim(fromProps, toProps) {
     _toProps = toProps;
 }
 
-function showPopup(popup, params = null, onHide = null) {
-    let views = _popups[popup];
+function showPopup(popup, params = null, onHide = null, name = "default") {
+    var mapKey = `${name}_${getClassName(popup)}`;
+    let views = _popups[mapKey];
     let view = new popup();
     view.popup = popup;
     view.params = params || {};
@@ -58,15 +60,16 @@ function showPopup(popup, params = null, onHide = null) {
     if (views) {
         views.push(view);
     } else {
-        _popups[popup] = [view];
+        _popups[mapKey] = [view];
     }
     UIMgr.addViewToMainLayer(view);
     view.onShow && view.onShow();
     _showPopup(view);
 }
 
-function hidePopup(popup, view = null, result = null) {
-    var views = _popups[popup];
+function hidePopup(popup, view = null, result = null, name = "default") {
+    var mapKey = `${name}_${getClassName(popup)}`;
+    var views = _popups[mapKey];
     if (view) {
         let index = views ? views.indexOf(view) : -1;
         if (index < 0) {
