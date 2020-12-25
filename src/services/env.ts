@@ -43,7 +43,7 @@ function isDebug() {
     if (_debugOn == "false" || _debugOn == "0") {
         return false;
     }
-    return _debugOn;
+    return !!_debugOn;
 }
 
 function setDebug(debug) {
