@@ -40,6 +40,9 @@ function isDebug() {
     if (_debugOn.indexOf('${') === 0) {
         return false;
     }
+    if (_debugOn == "false" || _debugOn == "0") {
+        return false;
+    }
     return _debugOn;
 }
 

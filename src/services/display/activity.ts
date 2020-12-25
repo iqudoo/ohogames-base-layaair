@@ -56,7 +56,6 @@ export default class Activity extends ui {
     static res = [];
     static single = false;
 
-    public ui = new Laya.Component;
     public page = null;
     public params = {};
     public duration = 0;
@@ -74,6 +73,7 @@ export default class Activity extends ui {
 
     constructor(options) {
         super(() => { this.back(); });
+        this.ui = new Laya.Component;
         this.width = screen.getDesignWidth();
         this.height = screen.getDesignHeight();
         this.params = Object.assign({}, options.params || {});
