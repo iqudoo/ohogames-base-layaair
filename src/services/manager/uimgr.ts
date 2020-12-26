@@ -11,11 +11,14 @@ function _checkInit() {
     if (!_inited) {
         _inited = true;
         _uiManager = new Laya.Sprite();
+        _uiManager.mouseThrough = true;
         _uiManager.name = '_tape_stage';
         _mainUILayer = new Laya.Sprite();
         _mainUILayer.name = '_tape_main_layer';
+        _mainUILayer.mouseThrough = true;
         _topUILayer = new Laya.Sprite();
         _topUILayer.name = '_tape_top_layer';
+        _topUILayer.mouseThrough = true;
         _uiManager.addChild(_mainUILayer);
         _uiManager.addChild(_topUILayer);
         Laya.stage.addChild(_uiManager);

@@ -27,6 +27,7 @@ export default class ui extends Laya.Component {
     public set ui(view: Laya.Sprite) {
         this.removeChildByName('_contentView');
         view.name = '_contentView';
+        view.mouseThrough = true;
         this.addChild(view);
     }
 
