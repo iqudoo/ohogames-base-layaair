@@ -1,12 +1,19 @@
 import { initBg } from "./bg";
 import { initUI } from "./uimgr";
 
+let _padding_left = 0;
+let _padding_right = 0;
+let _padding_top = 0;
+let _padding_bottom = 0;
+
 let _design_width = 0;
 let _design_height = 0;
 let _deviation = 0.01;
 let _adaption = true;
 
 function size() {
+    let paddingWidth = _padding_left + _padding_right;
+    let paddingHeight = _padding_top + _padding_bottom;
     let clientWidth = window.innerWidth || laya.utils.Browser.clientWidth;
     let clientHeight = window.innerHeight || laya.utils.Browser.clientHeight;
     let initWidth = _design_width;
@@ -54,7 +61,10 @@ function size() {
             }
         }
     }
-    return { initHeight, initWidth }
+    return {
+        initHeight: initHeight + paddingHeight,
+        initWidth: initWidth + paddingWidth
+    }
 }
 
 export function initScreen(is3D, width, height, ...options) {
@@ -94,6 +104,38 @@ function getHeight() {
     return Laya.stage.height;
 }
 
+function setPaddingLeft(padding) {
+    _padding_left = padding;
+}
+
+function getPaddingLeft() {
+    return _padding_left;
+}
+
+function setPaddingRight(padding) {
+    _padding_right = padding;
+}
+
+function getPaddingRight() {
+    return _padding_right;
+}
+
+function setPaddingTop(padding) {
+    _padding_top = padding;
+}
+
+function getPaddingTop() {
+    return _padding_top;
+}
+
+function setPaddingBottom(padding) {
+    _padding_bottom = padding;
+}
+
+function getPaddingBottom() {
+    return _padding_bottom;
+}
+
 function getDesignWidth() {
     return _design_width;
 }
@@ -112,20 +154,20 @@ function getScale() {
 
 function getOffestX() {
     if (!_adaption) {
-        return 0;
+        return _padding_left;
     }
     let scale = getScale();
     let width = getWidth();
-    return (width - _design_width * scale) / 2;
+    return (width - _design_width * scale) / 2 + _padding_left;
 }
 
 function getOffestY() {
     if (!_adaption) {
-        return 0;
+        return _padding_top;
     }
     let scale = getScale();
     let height = getHeight();
-    return (height - _design_height * scale) / 2;
+    return (height - _design_height * scale) / 2 + _padding_top;
 }
 
 function setDeviation(deviation) {
@@ -145,5 +187,13 @@ export default {
     getDesignWidth,
     getDesignHeight,
     setDeviation,
+    setPaddingLeft,
+    getPaddingLeft,
+    setPaddingRight,
+    getPaddingRight,
+    setPaddingTop,
+    getPaddingTop,
+    setPaddingBottom,
+    getPaddingBottom,
     setAdaption,
 }

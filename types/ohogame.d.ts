@@ -123,6 +123,8 @@ declare module OHOGame {
 
     /** screen */
     module screen {
+        /** getScale */
+        function getScale(): number;
         /** getWidth */
         function getWidth(): number;
         /** getHeight */
@@ -131,12 +133,26 @@ declare module OHOGame {
         function getDesignWidth(): number;
         /** getDesignHeight */
         function getDesignHeight(): number;
-        /** getScale */
-        function getScale(): number;
         /** getOffestX */
         function getOffestX(): number;
         /** getOffestY */
         function getOffestY(): number;
+        /** setPaddingLeft */
+        function setPaddingLeft(padding: number): void;
+        /** getPaddingLeft */
+        function getPaddingLeft(): number;
+        /** setPaddingRight */
+        function setPaddingRight(padding: number): void;
+        /** getPaddingRight */
+        function getPaddingRight(): number;
+        /** setPaddingTop */
+        function setPaddingTop(padding: number): void;
+        /** getPaddingTop */
+        function getPaddingTop(): number;
+        /** setPaddingBottom */
+        function setPaddingBottom(padding: number): void;
+        /** getPaddingBottom */
+        function getPaddingBottom(): number;
         /** setDeviation */
         function setDeviation(deviation: number): void;
         /** setAdaption */
@@ -231,10 +247,10 @@ declare module OHOGame {
         function navigate(page, params?: any, action?: Function): void;
         /** finish activity */
         function finish(page, instance?: any): void;
-        /** pop */
-        function pop(num?: number): void;
         /** pop to top */
         function popToTop(): void;
+        /** pop */
+        function pop(num?: number): void;
     }
 
     /** popup */
