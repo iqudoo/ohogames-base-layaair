@@ -73,6 +73,12 @@ declare module OHOGame {
     /** 获取地址中带的参数 */
     function getQueryString(key: string): string;
 
+    /** js */
+    module js {
+        /**  loadJs */
+        function loadJs(jspath: string, options?: obj): Promise<any>;
+    }
+
     /** env */
     module env {
         /** isLayaApp */

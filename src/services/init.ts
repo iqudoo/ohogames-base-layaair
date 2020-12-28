@@ -2,7 +2,7 @@ import env from "./env";
 import { initScreen } from "./manager/screen";
 import { initNavigator, setNavigatorReady } from "./navigator/init";
 import { callHookInit } from "./hook";
-import { loadJs } from "../utils/loadjs";
+import js from "./js";
 
 let _inited = false;
 
@@ -66,7 +66,7 @@ export function start(options, onLoaded = null, onLoadProgress = null) {
         setNavigatorReady();
     }
     if (options.vConsole) {
-        loadJs("https://cdn.bootcdn.net/ajax/libs/vConsole/3.3.4/vconsole.min.js").then(() => {
+        js.loadJs("https://cdn.bootcdn.net/ajax/libs/vConsole/3.3.4/vconsole.min.js").then(() => {
             try {
                 if (typeof window !== "undefined" && typeof window['VConsole'] !== "undefined") {
                     new window['VConsole']();

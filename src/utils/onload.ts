@@ -7,7 +7,7 @@ export function onload() {
             let _pollingDocument = function () {
                 if (!!document && document.readyState == 'complete') {
                     _timer && clearTimeout(_timer);
-                    reslove();
+                    reslove(Date.now());
                 } else {
                     _timer = setTimeout(_pollingDocument, 1);
                 }

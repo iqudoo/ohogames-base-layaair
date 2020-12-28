@@ -5,6 +5,7 @@ import eft from "./services/manager/eft";
 import screen from "./services/manager/screen";
 import audio from './services/audio';
 import env from "./services/env";
+import js from "./services/js";
 import event from "./services/event";
 import pipeline from "./services/pipeline";
 import runtime from "./services/runtime";
@@ -26,6 +27,7 @@ const OHOGame = Object.assign({}, lifecycle, {
     start,
     getQueryString,
     env,
+    js,
     bg,
     eft,
     screen,
