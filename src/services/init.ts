@@ -5,6 +5,23 @@ import { callHookInit } from "./hook";
 import js from "./js";
 
 let _inited = false;
+let _adapterInfo = null;
+
+function handleAdapter() {
+    try {
+        if (_adapterInfo) {
+            var stage = Laya.stage;
+            stage.width = _adapterInfo.width;
+            stage.height = _adapterInfo.height;
+            stage.scale(_adapterInfo.scaleX, _adapterInfo.scaleY);
+        }
+    } catch (error) {
+    }
+}
+
+export function setAdapterInfo(adapterInfo) {
+    _adapterInfo = adapterInfo;
+}
 
 export function init(width: number, height: number, ...options) {
     if (_inited) {
@@ -19,6 +36,7 @@ export function init(width: number, height: number, ...options) {
     env.printDebug(`debug: ${env.isDebug()}`);
     env.printDebug(`env: ${env.getEnv()}`);
     initScreen(false, width, height, ...options);
+    handleAdapter();
     callHookInit(width, height, ...options);
     _inited = true;
 }
@@ -36,6 +54,7 @@ export function init3D(width: number, height: number, ...options) {
     env.printDebug(`debug: ${env.isDebug()}`);
     env.printDebug(`env: ${env.getEnv()}`);
     initScreen(true, width, height, ...options);
+    handleAdapter();
     callHookInit(width, height, ...options);
     _inited = true;
 }

@@ -5,6 +5,18 @@ declare module OHOGame {
         [key: string]: any
     }
 
+    /** AdapterInfo */
+    type AdapterInfo = {
+        /** 宽度 */
+        width: number;
+        /** 高度 */
+        height: number;
+        /** X轴缩放 */
+        scaleX: number;
+        /** Y轴缩放 */
+        scaleY: number;
+    }
+
     /** ActivityOptions */
     interface ActivityOptions {
         /** single */
@@ -56,11 +68,13 @@ declare module OHOGame {
         destroy(): void;
     }
 
-    /** init for 2D */
+    /** 设置适配信息 */
+    function setAdapterInfo(adapterInfo: AdapterInfo): void;
+    /** 初始化 for 2D */
     function init(width: number, height: number, ...options): void;
-    /** init for 3D */
+    /** 初始化 for 3D */
     function init3D(width: number, height: number, ...options): void;
-    /** start */
+    /** 启动游戏 */
     function start(options: StartOptions | any, onLoaded?: () => void, onLoadProgress?: (progress: number) => void): void;
     /** 监听页面回到前台 */
     function onShow(showListener: () => void): void;
@@ -267,7 +281,7 @@ declare module OHOGame {
         function hidePopup(pop, view?: any, result?: any, alias?: string): void;
     }
 
-    /** toast*/
+    /** toast */
     module toast {
         /** showToast */
         function showToast(toast, params?, onHide?: (toast) => void): void;
@@ -351,6 +365,8 @@ declare module OHOGame {
         static pipeShow(params?: any, onHide?: (pop, result?: any) => void, alias?: string): void;
         /** hide */
         static hide(result?: any, alias?: string): void;
+        /** topLevel */
+        protected topLevel: boolean;
         /** pop */
         protected pop: any;
         /** ui */
@@ -394,6 +410,8 @@ declare module OHOGame {
         static show(params?: any, onHide?: (toast) => void): void;
         /** hide */
         static hide(): void;
+        /** topLevel */
+        protected topLevel: boolean;
         /** toast */
         protected toast: any;
         /** ui */

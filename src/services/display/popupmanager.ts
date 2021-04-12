@@ -63,7 +63,11 @@ function showPopup(popup, params = null, onHide = null, alias = "default") {
     } else {
         _popups[mapKey] = [view];
     }
-    UIMgr.addViewToMainLayer(view);
+    if (view.topLevel) {
+        UIMgr.addViewTopLayer(view);
+    } else {
+        UIMgr.addViewToMainLayer(view);
+    }
     view.onShow && view.onShow();
     _showPopup(view);
 }

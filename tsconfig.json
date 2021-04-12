@@ -8,12 +8,11 @@
       "es2016",
       "es2017"
     ],
-    "sourceMap": true,
+    "sourceMap": false,
     "allowJs": true
   },
   "include": [
     "libs/**/*.d.ts",
-    "src/**/*.ts",
-    "src/**/*.js"
+    "src/**/*.ts"
   ]
 }

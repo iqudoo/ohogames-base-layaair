@@ -36,6 +36,7 @@ export default class PopupView extends ui {
     public fromProps = null;
     public toProps = null;
     public exitProps = null;
+    public topLevel = false;
     public onShow?(): void;
     public onHide?(): void;
 
