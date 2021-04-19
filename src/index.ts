@@ -14,6 +14,7 @@ import utils from './services/utils';
 import navigator from "./services/navigator/stack";
 import popup from "./services/display/popupmanager";
 import toast from "./services/display/toastmanager";
+import BaseView from "./services/display/ui";
 import Activity from "./services/display/activity";
 import PopupView from "./services/display/popupview";
 import ToastView from "./services/display/toastview";
@@ -43,6 +44,7 @@ const OHOGame = Object.assign({}, lifecycle, {
     Activity,
     PopupView,
     ToastView,
+    BaseView
 });
 
 if (typeof window !== "undefined") {
