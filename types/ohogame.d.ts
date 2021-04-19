@@ -128,7 +128,7 @@ declare module OHOGame {
     /** message */
     module message {
         /** create */
-        function postMessage(data: obj): Laya.MovieClip;
+        function postMessage(data: obj): void;
         /** remove */
         function onMessage(callback: (data: obj) => void): void;
     }
@@ -243,18 +243,22 @@ declare module OHOGame {
         class btn extends Laya.Button {
             public sound: string;
         }
+        
         /** btn_img */
         class btn_img extends Laya.Image {
             public sound: string;
         }
+
         /** btn_label */
         class btn_label extends Laya.Label {
             public sound: string;
         }
+
         /** btn_sprite */
         class btn_sprite extends Laya.Sprite {
             public sound: string;
         }
+
         /** btn_box */
         class btn_box extends Laya.Box {
             public sound: string;
@@ -448,6 +452,14 @@ declare module OHOGame {
         protected hide(): void;
         /** constructor */
         constructor();
+
+    }
+
+    /** ToastView */
+    class BaseView extends Laya.Component {
+
+        /** ui */
+        protected ui: any;
 
     }
 

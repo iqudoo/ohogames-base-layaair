@@ -1,8 +1,8 @@
 import NavStack from "../navigator/stack";
-import ui from "./ui";
 import screen from "../manager/screen";
+import Component from "./component";
 
-export default class Activity extends ui {
+export default class Activity extends Component {
 
     static create(opts) {
         class NewAct extends Activity {

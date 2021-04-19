@@ -1,8 +1,8 @@
 import toast from "./toastmanager";
 import screen from "../manager/screen";
-import ui from "./ui";
+import Component from "./component";
 
-export default class ToastView extends ui {
+export default class ToastView extends Component {
 
     static show(params, onHide) {
         toast.showToast(this, params, onHide);

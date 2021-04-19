@@ -1,6 +1,7 @@
 import Screen from "../manager/screen";
+import BaseView from "./baseview";
 
-export default class ui extends Laya.Component {
+export default class Component extends BaseView {
 
     private _bgSprite = null;
     private _bgAlpha = 0.5;
@@ -22,17 +23,6 @@ export default class ui extends Laya.Component {
             e.stopPropagation();
         }
         setTimeout(() => this.initBg(), 0);
-    }
-
-    public set ui(view: Laya.Sprite) {
-        this.removeChildByName('_contentView');
-        view.name = '_contentView';
-        view.mouseThrough = true;
-        this.addChild(view);
-    }
-
-    public get ui(): Laya.Sprite {
-        return this.getChildByName('_contentView') as Laya.Sprite;
     }
 
     public set isShow(isShow) {

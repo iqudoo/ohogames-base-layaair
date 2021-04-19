@@ -1,9 +1,9 @@
 import popup from "./popupmanager";
 import screen from "../manager/screen";
 import pipeline from "../pipeline";
-import ui from "./ui";
+import Component from "./component";
 
-export default class PopupView extends ui {
+export default class PopupView extends Component {
 
     static show(params, onHide, alias) {
         popup.showPopup(this, params, onHide, alias);
