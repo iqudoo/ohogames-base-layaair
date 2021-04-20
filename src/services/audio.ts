@@ -1,6 +1,11 @@
 import env from "./env";
 import loop from "../utils/looper";
 
+let _volumes = {
+    "sound": 1,
+    "music": 1
+}
+
 function fixWechatAudioPlay(callback: Function) {
     if (window && window['WeixinJSBridge']) {
         try {
@@ -130,6 +135,7 @@ class AudioController {
                     this._onComplete && this._onComplete();
                     this.stop();
                 }), null, 0);
+                this._chancel.volume = _volumes[this._type];
                 loop.loop(this, this._update);
             }
         });
@@ -192,6 +198,14 @@ function playSound(url: string, loops: number = 1) {
     return audio;
 }
 
+function setMusicVolume(volume) {
+    _volumes.music = volume;
+}
+
+function setSoundVolume(volume) {
+    _volumes.sound = volume;
+}
+
 function stopMusic() {
     _musicAudio.stop();
 }
@@ -210,4 +224,6 @@ export default {
     stopAll,
     stopMusic,
     stopAllSound,
+    setMusicVolume,
+    setSoundVolume,
 }

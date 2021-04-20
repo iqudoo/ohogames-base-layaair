@@ -191,6 +191,10 @@ declare module OHOGame {
         function stopAll(): void;
         /** stopAllSound */
         function stopAllSound(): void;
+        /** setMusicVolume */
+        function setMusicVolume(volume: number): void;
+        /** setSoundVolume */
+        function setSoundVolume(volume: number): void;
     }
 
     /** utils */
@@ -243,7 +247,7 @@ declare module OHOGame {
         class btn extends Laya.Button {
             public sound: string;
         }
-        
+
         /** btn_img */
         class btn_img extends Laya.Image {
             public sound: string;
