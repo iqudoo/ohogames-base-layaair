@@ -72,7 +72,7 @@ function showPopup(popup, params = null, onHide = null, alias = "default") {
     _showPopup(view);
 }
 
-function hidePopup(popup, view = null, result = null, alias = "default") {
+function hidePopup(popup, view = null, result = {}, alias = "default") {
     var mapKey = `${alias}_${getClassName(popup)}`;
     var views = _popups[mapKey];
     if (view) {
@@ -84,7 +84,7 @@ function hidePopup(popup, view = null, result = null, alias = "default") {
         _hidePopup(view, result);
     } else {
         views && views.splice(0, views.length).forEach(v => {
-            _hidePopup(v, result);
+            _hidePopup(v, result || { close: true });
         });
     }
 }
