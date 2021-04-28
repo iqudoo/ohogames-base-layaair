@@ -59,8 +59,9 @@ declare module OHOGame {
         onPause(callback: () => void): void;
         onProgress(callback: (progress: { position: number, duration: number }) => void): void;
         onComplete(callback: () => void): void;
-        isPaused(): void;
-        isPlaying(): void;
+        isMusic(): boolean;
+        isPaused(): boolean;
+        isPlaying(): boolean;
         play(loops?: number): void
         pause(): void;
         resume(): void;

@@ -1,11 +1,6 @@
 import env from "./env";
 import loop from "../utils/looper";
 
-let _volumes = {
-    "sound": 1,
-    "music": 1
-}
-
 function fixWechatAudioPlay(callback: Function) {
     if (window && window['WeixinJSBridge']) {
         try {
@@ -31,6 +26,15 @@ function fixAudioExtension(targetUrl, replaceExt) {
 
 class AudioController {
 
+    private static _soundList: AudioController[] = [];
+
+    static stopAll() {
+        let soundList = AudioController._soundList.splice(0, AudioController._soundList.length);
+        soundList.forEach(item => {
+            item && item.stop();
+        });
+    }
+
     private _auidoUrl = '';
     private _chancel: Laya.SoundChannel = null;
     private _playing = false;
@@ -43,11 +47,14 @@ class AudioController {
     private _position = -1;
     private _duration = -1;
     private _paused = false;
-    private _type = 'sound';
+    private _music = false;
     private _playTime = 0;
 
-    constructor(type) {
-        this._type = type;
+    constructor(isMusic) {
+        this._music = isMusic;
+        if (!isMusic) {
+            AudioController._soundList.push(this);
+        }
     }
 
     private _update() {
@@ -105,16 +112,16 @@ class AudioController {
         return this._auidoUrl;
     }
 
-    public get type() {
-        return this._type;
-    }
-
     public get position() {
         return this._position;
     }
 
     public get duration() {
         return this._duration;
+    }
+
+    public isMusic() {
+        return this._music;
     }
 
     public isPaused() {
@@ -131,11 +138,17 @@ class AudioController {
                 this.stop();
                 let playUrl = fixAudioExtension(this._auidoUrl, '.ogg');
                 this._playTime = Date.now();
-                this._chancel = Laya.SoundManager.playSound(playUrl, loops, Laya.Handler.create(this, () => {
-                    this._onComplete && this._onComplete();
-                    this.stop();
-                }), null, 0);
-                this._chancel.volume = _volumes[this._type];
+                if (this._music) {
+                    this._chancel = Laya.SoundManager.playMusic(playUrl, loops, Laya.Handler.create(this, () => {
+                        this._onComplete && this._onComplete();
+                        this.stop();
+                    }), 0);
+                } else {
+                    this._chancel = Laya.SoundManager.playSound(playUrl, loops, Laya.Handler.create(this, () => {
+                        this._onComplete && this._onComplete();
+                        this.stop();
+                    }), null, 0);
+                }
                 loop.loop(this, this._update);
             }
         });
@@ -163,12 +176,16 @@ class AudioController {
         if (this._chancel) {
             this._onStop && this._onStop();
             this._chancel.stop();
-            this._chancel = null;
             this._paused = false;
             this._playing = false;
+            if (this._music) {
+                Laya.SoundManager.stopMusic();
+            } else {
+                Laya.SoundManager.stopSound(this._auidoUrl);
+            }
             Laya.SoundManager.removeChannel(this._chancel);
-            Laya.SoundManager.destroySound(this._auidoUrl);
             loop.clear(this, this._update);
+            this._chancel = null;
         }
     }
 
@@ -183,7 +200,7 @@ class AudioController {
 
 }
 
-let _musicAudio = new AudioController('music')
+let _musicAudio = new AudioController(true)
 
 function playMusic(url: string, loops: number = 1) {
     _musicAudio.url = url;
@@ -192,30 +209,31 @@ function playMusic(url: string, loops: number = 1) {
 }
 
 function playSound(url: string, loops: number = 1) {
-    let audio = new AudioController('sound');
+    let audio = new AudioController(false);
     audio.url = url;
     audio.play(loops);
     return audio;
-}
-
-function setMusicVolume(volume) {
-    _volumes.music = volume;
-}
-
-function setSoundVolume(volume) {
-    _volumes.sound = volume;
 }
 
 function stopMusic() {
     _musicAudio.stop();
 }
 
-function stopAll() {
-    Laya.SoundManager.stopAll();
+function stopAllSound() {
+    AudioController.stopAll();
 }
 
-function stopAllSound() {
-    Laya.SoundManager.stopAllSound();
+function stopAll() {
+    stopMusic();
+    stopAllSound();
+}
+
+function setMusicVolume(volume) {
+    Laya.SoundManager.setMusicVolume(volume);
+}
+
+function setSoundVolume(volume) {
+    Laya.SoundManager.setSoundVolume(volume);
 }
 
 export default {
