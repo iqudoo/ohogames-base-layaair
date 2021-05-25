@@ -12,6 +12,7 @@
     "allowJs": true
   },
   "include": [
+    "types/**/*.d.ts",
     "libs/**/*.d.ts",
     "src/**/*.ts"
   ]

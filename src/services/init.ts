@@ -2,7 +2,6 @@ import env from "./env";
 import { initScreen } from "./manager/screen";
 import { initNavigator, setNavigatorReady } from "./navigator/init";
 import { callHookInit } from "./hook";
-import js from "./js";
 
 let _inited = false;
 let _adapterInfo = null;
@@ -67,35 +66,19 @@ export function start(options, onLoaded = null, onLoadProgress = null) {
     if (!options) {
         options = {};
     }
-    let callStart = () => {
-        let newOptions = {
-            mainPage: options.mainPage || null,
-            commonRes: options.commonRes || [],
-            fileVersion: options.fileVersion,
-            onLoadProgress: (progress) => {
-                options.onLoadProgress && options.onLoadProgress(progress);
-                onLoadProgress && onLoadProgress(progress);
-            },
-            onLoaded: () => {
-                onLoaded && onLoaded();
-                options.onLoaded && options.onLoaded();
-            }
+    let newOptions = {
+        mainPage: options.mainPage || null,
+        commonRes: options.commonRes || [],
+        fileVersion: options.fileVersion,
+        onLoadProgress: (progress) => {
+            options.onLoadProgress && options.onLoadProgress(progress);
+            onLoadProgress && onLoadProgress(progress);
+        },
+        onLoaded: () => {
+            onLoaded && onLoaded();
+            options.onLoaded && options.onLoaded();
         }
-        initNavigator(newOptions);
-        setNavigatorReady();
     }
-    if (options.vConsole) {
-        js.loadJs("https://cdn.bootcdn.net/ajax/libs/vConsole/3.3.4/vconsole.min.js").then(() => {
-            try {
-                if (typeof window !== "undefined" && typeof window['VConsole'] !== "undefined") {
-                    new window['VConsole']();
-                }
-            } catch (error) {
-            }
-        }).catch(() => { }).then(() => {
-            callStart();
-        });
-    } else {
-        callStart();
-    }
+    initNavigator(newOptions);
+    setNavigatorReady();
 }
