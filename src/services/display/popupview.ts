@@ -30,12 +30,20 @@ export default class PopupView extends Component {
     public alias;
     public popup;
     public params;
-    public duration = 500;
+    public duration = 300;
     public easeIn = null;
     public easeOut = null;
     public fromProps = null;
     public toProps = null;
     public exitProps = null;
+
+    public uiDuration = 300;
+    public uiEaseIn = null;
+    public uiEaseOut = null;
+    public uiFromProps = null;
+    public uiToProps = null;
+    public uiExitProps = null;
+    
     public topLevel = false;
     public onShow?(): void;
     public onHide?(): void;

@@ -386,6 +386,18 @@ declare module OHOGame {
         protected toProps: obj;
         /** exitProps */
         protected exitProps: obj;
+        /** uiDuration */
+        protected uiDuration: number;
+        /** uiEaseIn */
+        protected uiEaseIn: obj;
+        /** uiEaseOut */
+        protected uiEaseOut: obj;
+        /** uiFromProps */
+        protected uiFromProps: obj;
+        /** uiToProps */
+        protected uiToProps: obj;
+        /** uiExitProps */
+        protected uiExitProps: obj;
         /** bgAlpha */
         protected bgAlpha: number;
         /** bgColor */

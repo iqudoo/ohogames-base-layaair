@@ -7,10 +7,18 @@ let _toProps = { alpha: 1 }
 let _exitProps = { alpha: 0 }
 
 function _showPopupAnim(popupView, cb) {
+    // ui anim
+    let uiDuration = popupView.uiDuration || 300;
+    let uiFromProps = popupView.uiFromProps || {};
+    let uiToProps = popupView.uiToProps || {};
+    let uiEaseIn = popupView.uiEaseIn || Laya.Ease.linearIn;
+    Object.assign(popupView.ui, uiFromProps);
+    Laya.Tween.to(popupView.ui, uiToProps, uiDuration, uiEaseIn);
+    // view anim
+    let duration = popupView.duration || 300;
     let from = popupView.fromProps || _fromProps || {};
     let to = popupView.toProps || _toProps || {};
     let easeIn = popupView.easeIn || Laya.Ease.linearIn;
-    let duration = popupView.duration || 500;
     Object.assign(popupView, from);
     Laya.Tween.to(popupView, to, duration, easeIn, Laya.Handler.create(this, () => {
         cb && cb(popupView);
@@ -18,12 +26,20 @@ function _showPopupAnim(popupView, cb) {
 }
 
 function _hidePopupAnim(popupView, cb) {
-    let from = popupView.toProps || _toProps || {};
-    let to = popupView.exitProps || _exitProps || {};
-    let easeOut = popupView.easeOut || Laya.Ease.linearOut;
+    // ui anim
+    let uiDuration = popupView.uiDuration || 300;
+    let uiToProps = popupView.uiToProps || {};
+    let uiExitProps = popupView.uiExitProps || {};
+    let uiEaseOut = popupView.uiEaseOut || Laya.Ease.linearOut;
+    Object.assign(popupView.ui, uiToProps);
+    Laya.Tween.to(popupView.ui, uiExitProps, uiDuration, uiEaseOut);
+    // view anim
     let duration = popupView.duration || 500;
-    Object.assign(popupView, from);
-    Laya.Tween.to(popupView, to, duration, easeOut, Laya.Handler.create(this, () => {
+    let toProps = popupView.toProps || _toProps || {};
+    let exitProps = popupView.exitProps || _exitProps || {};
+    let easeOut = popupView.easeOut || Laya.Ease.linearOut;
+    Object.assign(popupView, toProps);
+    Laya.Tween.to(popupView, exitProps, duration, easeOut, Laya.Handler.create(this, () => {
         cb && cb(popupView);
     }));
 }
