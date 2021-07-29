@@ -22,7 +22,11 @@ export default class Component extends BaseView {
             }
             e.stopPropagation();
         }
-        setTimeout(() => this.initBg(), 0);
+        this.initBg();
+    }
+
+    public get bg() {
+        return this._bgSprite;
     }
 
     public set isShow(isShow) {
@@ -82,6 +86,7 @@ export default class Component extends BaseView {
         if (!this._bgSprite) {
             return;
         }
+        this.resizeBg();
         this._bgSprite.alpha = this.bgAlpha;
         this._bgSprite.graphics.clear();
         if (!this.isTranslucent) {
@@ -102,13 +107,19 @@ export default class Component extends BaseView {
             return;
         }
         this._bgSprite = new Laya.Sprite();
-        this._bgSprite.x = -Screen.getOffestX();
-        this._bgSprite.y = -Screen.getOffestY();
-        this._bgSprite.width = Screen.getWidth();
-        this._bgSprite.height = Screen.getHeight();
         this.addChildAt(this._bgSprite, 0);
-        this.refreshBg();
         this.refreshCanceledOnTouchOutside();
+        this.refreshBg();
+    }
+
+    private resizeBg() {
+        if (!this._bgSprite) {
+            return;
+        }
+        this._bgSprite.x = -Screen.getOffestX() - 100;
+        this._bgSprite.y = -Screen.getOffestY() - 100;
+        this._bgSprite.width = Screen.getWidth() + 200;
+        this._bgSprite.height = Screen.getHeight() + 200;
     }
 
 }

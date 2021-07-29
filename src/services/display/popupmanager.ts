@@ -34,14 +34,14 @@ function _hidePopupAnim(popupView, cb) {
     Object.assign(popupView.ui, uiToProps);
     Laya.Tween.to(popupView.ui, uiExitProps, uiDuration, uiEaseOut);
     // view anim
-    let duration = popupView.duration || 500;
+    let duration = popupView.duration || 300;
     let toProps = popupView.toProps || _toProps || {};
     let exitProps = popupView.exitProps || _exitProps || {};
     let easeOut = popupView.easeOut || Laya.Ease.linearOut;
     Object.assign(popupView, toProps);
     Laya.Tween.to(popupView, exitProps, duration, easeOut, Laya.Handler.create(this, () => {
         cb && cb(popupView);
-    }));
+    }), Math.max(0, uiDuration - duration));
 }
 
 function _hidePopup(view, result) {

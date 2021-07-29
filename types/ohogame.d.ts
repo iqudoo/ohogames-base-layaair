@@ -305,6 +305,8 @@ declare module OHOGame {
         static single: boolean;
         /** page */
         protected page: any;
+        /** bg */
+        protected readonly bg: Laya.Sprite;
         /** ui */
         protected ui: any;
         /** params */
@@ -370,6 +372,8 @@ declare module OHOGame {
         protected topLevel: boolean;
         /** pop */
         protected pop: any;
+        /** bg */
+        protected readonly bg: Laya.Sprite;
         /** ui */
         protected ui: any;
         /** params */
@@ -427,6 +431,8 @@ declare module OHOGame {
         protected topLevel: boolean;
         /** toast */
         protected toast: any;
+        /** bg */
+        protected readonly bg: Laya.Sprite;
         /** ui */
         protected ui: any;
         /** params */
