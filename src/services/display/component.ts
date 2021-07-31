@@ -87,6 +87,7 @@ export default class Component extends BaseView {
             return;
         }
         this.resizeBg();
+        this.refreshCanceledOnTouchOutside();
         this._bgSprite.alpha = this.bgAlpha;
         this._bgSprite.graphics.clear();
         if (!this.isTranslucent) {
@@ -108,8 +109,7 @@ export default class Component extends BaseView {
         }
         this._bgSprite = new Laya.Sprite();
         this.addChildAt(this._bgSprite, 0);
-        this.refreshCanceledOnTouchOutside();
-        this.refreshBg();
+        setTimeout(() => { this.refreshBg() }, 0);
     }
 
     private resizeBg() {
