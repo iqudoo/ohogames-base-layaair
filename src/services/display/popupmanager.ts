@@ -45,27 +45,20 @@ function _hidePopupAnim(popupView, cb) {
 }
 
 function _hidePopup(view, result) {
-    let flag = view._onHide && view._onHide(view.popup, result);
-    if (flag !== false) {
-        _hidePopupAnim(view, () => {
-            view.isShow = false;
-            view.onHide && view.onHide(view.popup, result);
-            view.removeSelf && view.removeSelf();
-            view.destroy && view.destroy();
-            UIMgr.checkFocus();
-        });
-    }
+    _hidePopupAnim(view, () => {
+        view._onHide && view._onHide(view.popup, result);
+        view.isShow = false;
+        view.onHide && view.onHide(view.popup, result);
+        view.removeSelf && view.removeSelf();
+        view.destroy && view.destroy();
+        UIMgr.checkFocus();
+    });
 }
 
 function _showPopup(view) {
     _showPopupAnim(view, () => {
         view.isShow = true;
     });
-}
-
-function setDefaultAnim(fromProps, toProps) {
-    _fromProps = fromProps;
-    _toProps = toProps;
 }
 
 function showPopup(popup, params = null, onHide = null, alias = "default") {
@@ -108,7 +101,6 @@ function hidePopup(popup, view = null, result = {}, alias = "default") {
 }
 
 export default {
-    setDefaultAnim,
     showPopup,
     hidePopup
 }
