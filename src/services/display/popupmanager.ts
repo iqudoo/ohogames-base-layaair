@@ -45,14 +45,16 @@ function _hidePopupAnim(popupView, cb) {
 }
 
 function _hidePopup(view, result) {
-    _hidePopupAnim(view, () => {
-        view._onHide && view._onHide(view.popup, result);
-        view.isShow = false;
-        view.onHide && view.onHide(view.popup, result);
-        view.removeSelf && view.removeSelf();
-        view.destroy && view.destroy();
-        UIMgr.checkFocus();
-    });
+    let flag = view._onHide && view._onHide(view.popup, result);
+    if (flag !== false) {
+        _hidePopupAnim(view, () => {
+            view.isShow = false;
+            view.onHide && view.onHide(view.popup, result);
+            view.removeSelf && view.removeSelf();
+            view.destroy && view.destroy();
+            UIMgr.checkFocus();
+        });
+    }
 }
 
 function _showPopup(view) {
