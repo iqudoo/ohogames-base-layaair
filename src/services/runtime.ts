@@ -2,8 +2,8 @@ module runtime {
 
     export let clickSound = null;
     export let scaleTime: number = 100;
-    export let scaleSmallValue: number = 0.8;
-    export let scaleBigValue: number = 1;
+    export let scaleDownValue: number = 1.2;
+    export let scaleNormalValue: number = 1;
 
     function pivotCenter(view) {
         view.x = view.x + view.width / 2 - view.pivotX;
@@ -11,9 +11,9 @@ module runtime {
         view.pivot(view.width / 2, view.height / 2);
     }
 
-    function viewScale(view, scale) {
+    function viewScale(view, scale, time) {
         pivotCenter(view);
-        Laya.Tween.to(view, { scaleX: scale, scaleY: scale }, scaleTime);
+        Laya.Tween.to(view, { scaleX: scale, scaleY: scale }, time);
     }
 
     function playClickSound(sound) {
@@ -28,25 +28,28 @@ module runtime {
         view.offAll();
         view.on(Laya.Event.CLICK, view, () => {
             onClick && onClick();
-            playClickSound(view.sound);
+            playClickSound(view.clickSound);
         });
         view.on(Laya.Event.MOUSE_DOWN, view, () => {
+            viewScale(view, view.scaleDownValue || scaleDownValue, view.scaleTime || scaleTime);
             onDown && onDown();
-            viewScale(view, scaleSmallValue);
         });
         view.on(Laya.Event.MOUSE_UP, view, () => {
+            viewScale(view, view.scaleNormalValue || scaleNormalValue, view.scaleTime || scaleTime);
             onUp && onUp();
-            viewScale(view, scaleBigValue);
         });
         view.on(Laya.Event.MOUSE_OUT, view, () => {
+            viewScale(view, view.scaleNormalValue || scaleNormalValue, view.scaleTime || scaleTime);
             onOut && onOut();
-            viewScale(view, scaleBigValue);
         });
     }
 
     export class btn extends Laya.Button {
 
-        public sound = null;
+        public scaleTime = null;
+        public scaleDownValue = null;
+        public scaleNormalValue = null;
+        public clickSound = null;
 
         constructor() {
             super();
@@ -57,7 +60,10 @@ module runtime {
 
     export class btn_img extends Laya.Image {
 
-        public sound = null;
+        public scaleTime = null;
+        public scaleDownValue = null;
+        public scaleNormalValue = null;
+        public clickSound = null;
 
         constructor() {
             super();
@@ -68,7 +74,11 @@ module runtime {
 
     export class btn_label extends Laya.Label {
 
-        public sound = null;
+        public scaleTime = null;
+        public scaleDownValue = null;
+        public scaleNormalValue = null;
+        public clickSound = null;
+
         constructor() {
             super();
             bindClick(this);
@@ -78,7 +88,11 @@ module runtime {
 
     export class btn_sprite extends Laya.Sprite {
 
-        public sound = null;
+        public scaleTime = null;
+        public scaleDownValue = null;
+        public scaleNormalValue = null;
+        public clickSound = null;
+
         constructor() {
             super();
             bindClick(this);
@@ -88,7 +102,11 @@ module runtime {
 
     export class btn_box extends Laya.Box {
 
-        public sound = null;
+        public scaleTime = null;
+        public scaleDownValue = null;
+        public scaleNormalValue = null;
+        public clickSound = null;
+
         constructor() {
             super();
             bindClick(this);

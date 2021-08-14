@@ -226,40 +226,59 @@ declare module OHOGame {
 
     /** runtime */
     module runtime {
-        /** clickSound */
-        let clickSound: string;
+
         /** scaleTime */
         let scaleTime: number;
-        /** scaleSmalValue */
-        let scaleSmalValue: number;
-        /** scaleBigValue */
-        let scaleBigValue: number;
+        /** scaleDownValue */
+        let scaleDownValue: number;
+        /** scaleNormalValue */
+        let scaleNormalValue: number;
+        /** clickSound */
+        let clickSound: string;
+
         /** bindClick */
         function bindClick(view, onClick?: () => void, onDown?: () => void, onUp?: () => void, onOut?: () => void): void;
+        
         /** btn */
         class btn extends Laya.Button {
-            public sound: string;
+            public scaleTime: number;
+            public scaleDownValue: number;
+            public scaleNormalValue: number;
+            public clickSound: string;
         }
 
         /** btn_img */
         class btn_img extends Laya.Image {
-            public sound: string;
+            public scaleTime: number;
+            public scaleDownValue: number;
+            public scaleNormalValue: number;
+            public clickSound: string;
         }
 
         /** btn_label */
         class btn_label extends Laya.Label {
-            public sound: string;
+            public scaleTime: number;
+            public scaleDownValue: number;
+            public scaleNormalValue: number;
+            public clickSound: string;
         }
 
         /** btn_sprite */
         class btn_sprite extends Laya.Sprite {
-            public sound: string;
+            public scaleTime: number;
+            public scaleDownValue: number;
+            public scaleNormalValue: number;
+            public clickSound: string;
         }
 
         /** btn_box */
         class btn_box extends Laya.Box {
-            public sound: string;
+            public scaleTime: number;
+            public scaleDownValue: number;
+            public scaleNormalValue: number;
+            public clickSound: string;
         }
+
     }
 
     /** navigator */
