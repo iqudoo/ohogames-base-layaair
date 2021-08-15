@@ -95,7 +95,7 @@ export default class extends Laya.Component {
         var duration = this._activity.duration || 0;
         var fromProps = this._activity.fromProps || {};
         var toProps = this._activity.toProps || {};
-        if (anim && easeIn && duration > 0) {
+        if (anim && duration > 0) {
             Object.assign(this, fromProps);
             env.printDebug("onResume", this._getPageName());
             this._activity.onResume && this._activity.onResume();
@@ -112,7 +112,7 @@ export default class extends Laya.Component {
         UIMgr.checkFocus();
     }
 
-    hide() {
+    hide(anim, callback) {
         if (!this.visible) {
             return;
         }
@@ -120,9 +120,24 @@ export default class extends Laya.Component {
             return;
         }
         this._isShow = false;
-        env.printDebug("onPause", this._getPageName());
-        this._activity.onPause && this._activity.onPause();
-        this.visible = false;
+        var easeOut = this._activity.easeOut || Laya.Ease.linearIn;
+        var duration = this._activity.duration || 0;
+        var fromProps = this._activity.toProps || {};
+        var toProps = this._activity.exitProps || {};
+        if (anim && duration > 0) {
+            Object.assign(this, fromProps);
+            env.printDebug("onPause", this._getPageName());
+            this._activity.onPause && this._activity.onPause();
+            Laya.Tween.to(this, toProps, duration, easeOut, Laya.Handler.create(this, () => {
+                this.visible = true;
+                callback && callback();
+            }));
+        } else {
+            env.printDebug("onPause", this._getPageName());
+            this._activity.onPause && this._activity.onPause();
+            this.visible = false;
+            callback && callback();
+        }
         this.focus(false);
     }
 

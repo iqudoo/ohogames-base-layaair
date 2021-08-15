@@ -8,7 +8,7 @@ let _padding_bottom = 0;
 
 let _design_width = 0;
 let _design_height = 0;
-let _deviation = 0.01;
+let _deviation = 0;
 let _adaption = true;
 
 function size() {
@@ -20,50 +20,50 @@ function size() {
     let initHeight = _design_height;
     let screenRatio = 1;
     let initRatio = 1;
-    if (_design_width < _design_height && clientWidth < clientHeight) { // 页面和游戏都是竖屏
+    if (initWidth < initHeight && clientWidth < clientHeight) { // 页面和游戏都是竖屏
         screenRatio = clientHeight / clientWidth
-        initRatio = _design_height / _design_width
+        initRatio = initHeight / initWidth
         if (Math.abs(screenRatio / initRatio - 1) > _deviation) {
             if (screenRatio > initRatio) {
-                initHeight = _design_width * screenRatio;
+                initHeight = initWidth * screenRatio;
             } else if (screenRatio < initRatio) {
-                initWidth = _design_height / screenRatio;
+                initWidth = initHeight / screenRatio;
             }
         }
-    } else if (_design_width < _design_height && clientWidth >= clientHeight) { // 页面横屏，游戏竖屏
+    } else if (initWidth < initHeight && clientWidth >= clientHeight) { // 页面横屏，游戏竖屏
         screenRatio = clientHeight / clientWidth
-        initRatio = _design_width / _design_height;
+        initRatio = initWidth / initHeight;
         if (Math.abs(screenRatio / initRatio - 1) > _deviation) {
             if (screenRatio > initRatio) {
-                initWidth = _design_height * screenRatio;
+                initWidth = initHeight * screenRatio;
             } else if (screenRatio < initRatio) {
-                initHeight = _design_width / screenRatio;
+                initHeight = initWidth / screenRatio;
             }
         }
-    } else if (_design_width >= _design_height && clientWidth >= clientHeight) { // 页面和游戏都是横屏
+    } else if (initWidth >= initHeight && clientWidth >= clientHeight) { // 页面和游戏都是横屏
         screenRatio = clientHeight / clientWidth
-        initRatio = _design_height / _design_width
+        initRatio = initHeight / initWidth
         if (Math.abs(screenRatio / initRatio - 1) > _deviation) {
             if (screenRatio > initRatio) {
-                initHeight = _design_width * screenRatio;
+                initHeight = initWidth * screenRatio;
             } else if (screenRatio < initRatio) {
-                initWidth = _design_height / screenRatio;
+                initWidth = initHeight / screenRatio;
             }
         }
-    } else if (_design_width >= _design_height && clientWidth < clientHeight) { // 页面竖屏，游戏横屏
+    } else if (initWidth >= initHeight && clientWidth < clientHeight) { // 页面竖屏，游戏横屏
         screenRatio = clientHeight / clientWidth
-        initRatio = _design_width / _design_height;
+        initRatio = initWidth / initHeight;
         if (Math.abs(screenRatio / initRatio - 1) > _deviation) {
             if (screenRatio > initRatio) {
-                initWidth = _design_height * screenRatio;
+                initWidth = initHeight * screenRatio;
             } else if (screenRatio < initRatio) {
-                initHeight = _design_width / screenRatio;
+                initHeight = initWidth / screenRatio;
             }
         }
     }
     return {
-        initHeight: initHeight + paddingHeight,
-        initWidth: initWidth + paddingWidth
+        initHeight: initHeight + paddingWidth,
+        initWidth: initWidth + paddingHeight
     }
 }
 
@@ -102,6 +102,14 @@ function getWidth() {
 
 function getHeight() {
     return Laya.stage.height;
+}
+
+function getContentWidth() {
+    return getWidth() - _padding_left - _padding_right;
+}
+
+function getContentHeight() {
+    return getHeight() - _padding_top - _padding_bottom;
 }
 
 function setPaddingLeft(padding) {
@@ -145,8 +153,8 @@ function getDesignHeight() {
 }
 
 function getScale() {
-    let width = getWidth();
-    let height = getHeight();
+    let width = getContentWidth();
+    let height = getContentHeight();
     let designWidth = getDesignWidth();
     let designHeight = getDesignHeight();
     return Math.min(width / designWidth, height / designHeight);
@@ -157,7 +165,7 @@ function getOffestX() {
         return _padding_left;
     }
     let scale = getScale();
-    let width = getWidth();
+    let width = getContentWidth();
     return (width - _design_width * scale) / 2 + _padding_left;
 }
 
@@ -166,7 +174,7 @@ function getOffestY() {
         return _padding_top;
     }
     let scale = getScale();
-    let height = getHeight();
+    let height = getContentHeight();
     return (height - _design_height * scale) / 2 + _padding_top;
 }
 
@@ -184,6 +192,8 @@ export default {
     getScale,
     getOffestX,
     getOffestY,
+    getContentWidth,
+    getContentHeight,
     getDesignWidth,
     getDesignHeight,
     setDeviation,

@@ -116,10 +116,10 @@ export default class Component extends BaseView {
         if (!this._bgSprite) {
             return;
         }
-        this._bgSprite.x = -Screen.getOffestX() - 100;
-        this._bgSprite.y = -Screen.getOffestY() - 100;
-        this._bgSprite.width = Screen.getWidth() + 200;
-        this._bgSprite.height = Screen.getHeight() + 200;
+        this._bgSprite.x = -Screen.getOffestX();
+        this._bgSprite.y = -Screen.getOffestY();
+        this._bgSprite.width = Screen.getWidth();
+        this._bgSprite.height = Screen.getHeight();
     }
 
 }

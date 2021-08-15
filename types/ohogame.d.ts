@@ -5,7 +5,7 @@ declare module OHOGame {
         [key: string]: any
     }
 
-    /** AdapterInfo */
+    /** 屏幕适配选项 */
     type AdapterInfo = {
         /** 宽度 */
         width: number;
@@ -17,7 +17,17 @@ declare module OHOGame {
         scaleY: number;
     }
 
-    /** ActivityOptions */
+    /** 初始化选项 */
+    interface StartOptions {
+        mainPage?: any;
+        commonRes?: { url: string, type: string }[];
+        fileVersion?: string;
+        vConsole?: boolean,
+        onLoadProgress?: (progress: number) => void;
+        onLoaded?: () => void;
+    }
+
+    /** 页面选项 */
     interface ActivityOptions {
         /** single */
         single?: boolean;
@@ -39,33 +49,39 @@ declare module OHOGame {
         onNextProgress?(progress: number): void;
     }
 
-    /** StartOptions */
-    interface StartOptions {
-        mainPage?: any;
-        commonRes?: { url: string, type: string }[];
-        fileVersion?: string;
-        vConsole?: boolean,
-        onLoadProgress?: (progress: number) => void;
-        onLoaded?: () => void;
-    }
-
-    /** AudioController */
+    /** 音频控制器 */
     interface AudioController {
+        /** 音频地址 */
         readonly url: string;
+        /** 当前播放进度 */
         readonly position: number;
+        /** 音频长度 */
         readonly duration: number;
+        /** 开始播放回调 */
         onPlay(callback: () => void): void;
+        /** 停止播放回调 */
         onStop(callback: () => void): void;
+        /** 暂停播放回调 */
         onPause(callback: () => void): void;
+        /** 播放进度回调 */
         onProgress(callback: (progress: { position: number, duration: number }) => void): void;
+        /** 播放完成回调 */
         onComplete(callback: () => void): void;
+        /** 背景音乐 */
         isMusic(): boolean;
+        /** 暂停状态 */
         isPaused(): boolean;
+        /** 正在播放中 */
         isPlaying(): boolean;
+        /** 开始播放 */
         play(loops?: number): void
+        /** 暂停 */
         pause(): void;
+        /** 开始 */
         resume(): void;
+        /** 停止 */
         stop(): void;
+        /** 销毁 */
         destroy(): void;
     }
 
@@ -80,139 +96,143 @@ declare module OHOGame {
     /** 获取地址中带的参数 */
     function getQueryString(key: string): string;
 
-    /** js */
+    /** JS处理 */
     module js {
-        /**  loadJs */
+        /**  加载JS文件 */
         function loadJs(jspath: string, options?: obj): Promise<any>;
     }
 
-    /** env */
+    /** 环境 */
     module env {
-        /** isLayaApp */
+        /** Laya缓存中 */
         function isLayaApp(): boolean;
-        /** isConchApp */
+        /** Laya runtime 环境中 */
         function isConchApp(): boolean;
-        /** getVersion */
+        /** 当前版本号 */
         function getVersion(): string;
-        /** setDebug */
+        /** 设置调试模式，开启后打印日志 */
         function setDebug(debug: boolean): void;
-        /** printDebug */
+        /** 打印调试日志 */
         function printDebug(message: any, ...options): void;
-        /** printError */
+        /** 打印错误日志 */
         function printError(message: any, ...options): void;
-        /** setEnv */
+        /** 设置当前环境变量 */
         function setEnv(env): void;
-        /** getEnv */
+        /** 获取当前环境变量 */
         function getEnv(): string;
     }
 
-    /** bg */
+    /** 背景 */
     module bg {
-        /** setBgColor */
+        /** 设置背景颜色 */
         function setBgColor(color: string): void;
-        /** setBgSkin */
+        /** 设置背景图片 */
         function setBgSkin(url: string, sizeGrid?: string): void;
-        /** setBgTexture */
+        /** 设置背景贴图 */
         function setBgTexture(url: string): void;
-        /** getBgSprite */
+        /** 获取背景精灵 */
         function getBgSprite(): Laya.Sprite;
     }
 
-    /** message */
+    /** 消息 */
     module message {
-        /** create */
+        /** 发送消息 */
         function postMessage(data: obj): void;
-        /** remove */
+        /** 监听消息 */
         function onMessage(callback: (data: obj) => void): void;
     }
 
-    /** eft */
+    /** 特效 */
     module eft {
-        /** create */
+        /** 创建特效 */
         function create(path: string, play?: boolean, loop?: boolean, loadComplet?: Function, thisRef?: any): Laya.MovieClip;
-        /** remove */
+        /** 销毁特效 */
         function remove(mc: Laya.MovieClip): void;
     }
 
-    /** screen */
+    /** 屏幕 */
     module screen {
-        /** getScale */
+        /** 获取屏幕缩放比例 */
         function getScale(): number;
-        /** getWidth */
+        /** 获取画布宽度 */
         function getWidth(): number;
-        /** getHeight */
+        /** 获取画布高度 */
         function getHeight(): number;
-        /** getDesignWidth */
+        /** 获取内容尺寸宽度 */
+        function getContentWidth(): number;
+        /** 获取内容尺寸高度 */
+        function getContentHeight(): number;
+        /** 获取设计尺寸宽度 */
         function getDesignWidth(): number;
-        /** getDesignHeight */
+        /** 获取设计尺寸高度 */
         function getDesignHeight(): number;
-        /** getOffestX */
+        /** 获取x轴偏移量 */
         function getOffestX(): number;
-        /** getOffestY */
+        /** 获取y轴偏移量 */
         function getOffestY(): number;
-        /** setPaddingLeft */
+        /** 设置左边距 */
         function setPaddingLeft(padding: number): void;
-        /** getPaddingLeft */
+        /** 获取左边距 */
         function getPaddingLeft(): number;
-        /** setPaddingRight */
+        /** 设置右边距 */
         function setPaddingRight(padding: number): void;
-        /** getPaddingRight */
+        /** 获取右边距 */
         function getPaddingRight(): number;
-        /** setPaddingTop */
+        /** 设置上边距 */
         function setPaddingTop(padding: number): void;
-        /** getPaddingTop */
+        /** 获取上边距 */
         function getPaddingTop(): number;
-        /** setPaddingBottom */
+        /** 设置下边距 */
         function setPaddingBottom(padding: number): void;
-        /** getPaddingBottom */
+        /** 获取下边距 */
         function getPaddingBottom(): number;
-        /** setDeviation */
+        /** 设置触发适配阈值 */
         function setDeviation(deviation: number): void;
-        /** setAdaption */
+        /** 设置是否适配屏幕 */
         function setAdaption(adaption: boolean): void;
     }
 
-    /** audio */
+    /** 音频模块 */
     module audio {
-        /** playMusic */
+        /** 播放背景音乐 */
         function playMusic(url: string, loops?: number): AudioController;
-        /** playSound */
+        /** 播放音效 */
         function playSound(url: string, loops?: number): AudioController;
-        /** stopMusic */
+        /** 停止背景音乐 */
         function stopMusic(): void;
-        /** stopAll */
+        /** 停止背景音乐及所有音效 */
         function stopAll(): void;
-        /** stopAllSound */
+        /** 停止所有音效 */
         function stopAllSound(): void;
-        /** setMusicVolume */
+        /** 设置背景音乐音量 */
         function setMusicVolume(volume: number): void;
-        /** setSoundVolume */
+        /** 设置音效音量 */
         function setSoundVolume(volume: number): void;
     }
 
-    /** utils */
+    /** 工具模块 */
     module utils {
-        /** randomUUID */
+        /** 随机uuid */
         function randomUUID(): string;
-        /** randomNumber */
+        /** 生成随机数 */
         function randomNumber(minNum: number, maxNum: number): number;
-        /** randomNumber */
+        /** 生成随机整数 */
         function randomInteger(minNum: number, maxNum: number): number;
-        /** randomArray */
+        /** 基于原数组生成新的随机数 */
         function randomArray(source: any[], length?: number): any[];
-        /** randomArrayItem */
+        /** 随机从数组中获取一条数据 */
         function randomArrayItem(source: any[]): any;
-        /** toAny */
+        /** 数据格式转换 */
         function toAny(source: any, def: any): any;
     }
 
-    /** event */
+    /** 事件 */
     module event {
-        /** registeredEvent */
+        /** 注册事件 */
         function registeredEvent(type: any, func: Function, thisRef: any, index?: number): void
-        /** removeEvent */
+        /** 取消注册事件 */
         function removeEvent(type: any, func: Function, thisRef: any): void;
-        /** sendEvent */
+        /** 发送事件 */
         function sendEvent(type: any, args?: Array<any>): void;
     }
 
@@ -224,92 +244,98 @@ declare module OHOGame {
         function next(type: string): void;
     }
 
-    /** runtime */
+    /** 默认点击效果集合 */
     module runtime {
 
-        /** scaleTime */
-        let scaleTime: number;
-        /** scaleDownValue */
-        let scaleDownValue: number;
-        /** scaleNormalValue */
-        let scaleNormalValue: number;
-        /** clickSound */
+        /** 点击效果动画时长 */
+        let clickAnimDuration: number;
+        /** 点击缩放值 */
+        let clickDownProps: obj;
+        /** 松开缩放值 */
+        let clickNormalProps: obj;
+        /** 点击音效 */
         let clickSound: string;
 
-        /** bindClick */
+        /** 绑定点击效果 */
         function bindClick(view, onClick?: () => void, onDown?: () => void, onUp?: () => void, onOut?: () => void): void;
-        
-        /** btn */
+
+        /** 按钮 */
         class btn extends Laya.Button {
-            public scaleTime: number;
-            public scaleDownValue: number;
-            public scaleNormalValue: number;
+            public clickAnimDuration: number;
+            public clickDownProps: obj;
+            public clickNormalProps: obj;
             public clickSound: string;
         }
 
-        /** btn_img */
+        /** 图片 */
         class btn_img extends Laya.Image {
-            public scaleTime: number;
-            public scaleDownValue: number;
-            public scaleNormalValue: number;
+            public clickAnimDuration: number;
+            public clickDownProps: obj;
+            public clickNormalProps: obj;
             public clickSound: string;
         }
 
-        /** btn_label */
+        /** 文字标签 */
         class btn_label extends Laya.Label {
-            public scaleTime: number;
-            public scaleDownValue: number;
-            public scaleNormalValue: number;
+            public clickAnimDuration: number;
+            public clickDownProps: obj;
+            public clickNormalProps: obj;
             public clickSound: string;
         }
 
-        /** btn_sprite */
+        /** 精灵 */
         class btn_sprite extends Laya.Sprite {
-            public scaleTime: number;
-            public scaleDownValue: number;
-            public scaleNormalValue: number;
+            public clickAnimDuration: number;
+            public clickDownProps: obj;
+            public clickNormalProps: obj;
             public clickSound: string;
         }
 
-        /** btn_box */
+        /** 控件组 */
         class btn_box extends Laya.Box {
-            public scaleTime: number;
-            public scaleDownValue: number;
-            public scaleNormalValue: number;
+            public clickAnimDuration: number;
+            public clickDownProps: obj;
+            public clickNormalProps: obj;
             public clickSound: string;
+        }
+
+        /** 翻页控件 */
+        class page_view extends Laya.List {
+            public onPageChangeHandler: (pageId: number) => void;
+            public pageId: number;
         }
 
     }
 
-    /** navigator */
+    /** 页面导航模块 */
     module navigator {
-        /** navigate */
+        /** 打开新页面 */
         function navigate(page, params?: any, action?: Function): void;
-        /** finish activity */
+        /** 关闭页面 */
         function finish(page, instance?: any): void;
-        /** pop to top */
+        /** 退到第一个页面 */
         function popToTop(): void;
-        /** pop */
+        /** 页面后退 */
         function pop(num?: number): void;
     }
 
-    /** popup */
+    /** 弹窗 */
     module popup {
-        /** showPop */
+        /** 显示弹窗 */
         function showPopup(pop, params?, onHide?: (pop, result?: any) => void, alias?: string): void;
-        /** hidePop */
+        /** 隐藏弹窗 */
         function hidePopup(pop, view?: any, result?: any, alias?: string): void;
     }
 
-    /** toast */
+    /** 提示 */
     module toast {
-        /** showToast */
+        /** 显示提示内容 */
         function showToast(toast, params?, onHide?: (toast) => void): void;
-        /** hideToast */
+        /** 隐藏提示内容 */
         function hideToast(toast, view?: any): void;
     }
 
-    /** Activity */
+    /** 页面组件 */
     class Activity extends Laya.Component {
 
         /** create */
@@ -340,6 +366,8 @@ declare module OHOGame {
         protected fromProps: obj;
         /** toProps */
         protected toProps: obj;
+        /** exitProps */
+        protected exitProps: obj;
         /** bgAlpha */
         protected bgAlpha: number;
         /** bgColor */
@@ -377,7 +405,7 @@ declare module OHOGame {
 
     }
 
-    /** PopupView */
+    /** 弹窗组件 */
     class PopupView extends Laya.Component {
         /** show */
         static show(params?: any, onHide?: (pop, result?: any) => void, alias?: string): void;
@@ -439,7 +467,7 @@ declare module OHOGame {
         constructor();
     }
 
-    /** ToastView */
+    /** 提示内容组件 */
     class ToastView extends Laya.Component {
 
         /** show */
@@ -489,7 +517,7 @@ declare module OHOGame {
 
     }
 
-    /** ToastView */
+    /** 基础组件 */
     class BaseView extends Laya.Component {
 
         /** ui */

@@ -63,6 +63,7 @@ export default class Activity extends Component {
     public easeOut = null;
     public fromProps = null;
     public toProps = null;
+    public exitProps = null;
 
     public onFocus?(focus): void;
     public onCreate?(): void;

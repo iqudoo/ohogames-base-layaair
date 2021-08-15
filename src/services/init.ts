@@ -1,5 +1,5 @@
 import env from "./env";
-import { initScreen } from "./manager/screen";
+import Screen, { initScreen } from "./manager/screen";
 import { initNavigator, setNavigatorReady } from "./navigator/init";
 import { callHookInit } from "./hook";
 
@@ -30,14 +30,15 @@ export function init(width: number, height: number, ...options) {
         env.printError('Please ensure that the \'Laya\' library has been introduced.');
         return;
     }
-    env.printDebug(`init...`);
-    env.printDebug(`version: ${env.getVersion()}`);
-    env.printDebug(`debug: ${env.isDebug()}`);
-    env.printDebug(`env: ${env.getEnv()}`);
     initScreen(false, width, height, ...options);
     handleAdapter();
     callHookInit(width, height, ...options);
     _inited = true;
+    env.printDebug(`init...`);
+    env.printDebug(`offest: ${Screen.getOffestX()}, ${Screen.getOffestY()}`);
+    env.printDebug(`version: ${env.getVersion()}`);
+    env.printDebug(`debug: ${env.isDebug()}`);
+    env.printDebug(`env: ${env.getEnv()}`);
 }
 
 export function init3D(width: number, height: number, ...options) {
@@ -48,14 +49,15 @@ export function init3D(width: number, height: number, ...options) {
         env.printError('Please ensure that the \'Laya\' library has been introduced.');
         return;
     }
-    env.printDebug(`init3D...`);
-    env.printDebug(`version: ${env.getVersion()}`);
-    env.printDebug(`debug: ${env.isDebug()}`);
-    env.printDebug(`env: ${env.getEnv()}`);
     initScreen(true, width, height, ...options);
     handleAdapter();
     callHookInit(width, height, ...options);
     _inited = true;
+    env.printDebug(`init3D...`);
+    env.printDebug(`offest: ${Screen.getOffestX()}, ${Screen.getOffestY()}`);
+    env.printDebug(`version: ${env.getVersion()}`);
+    env.printDebug(`debug: ${env.isDebug()}`);
+    env.printDebug(`env: ${env.getEnv()}`);
 }
 
 export function start(options, onLoaded = null, onLoadProgress = null) {

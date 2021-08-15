@@ -56,8 +56,9 @@ function _finishStack(stacks) {
     for (var i = 0; _length() > 1 && i < stacks.length; i++) {
         var stack = stacks[i];
         _loaders.splice(_loaders.indexOf(stack), 1);
-        stack.hide();
-        stack.exit();
+        stack.hide(true, () => {
+            stack.exit();
+        });
     }
     _showStack(0);
 }
@@ -70,9 +71,10 @@ function _popStack(count) {
         return;
     }
     let pops = _loaders.splice(_length() - count, count);
-    pops.forEach(element => {
-        element.hide();
-        element.exit();
+    pops.forEach(stack => {
+        stack.hide(true, () => {
+            stack.exit();
+        });
     });
     _showStack(0);
 }

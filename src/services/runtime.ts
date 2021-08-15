@@ -1,9 +1,9 @@
 module runtime {
 
     export let clickSound = null;
-    export let scaleTime: number = 100;
-    export let scaleDownValue: number = 1.2;
-    export let scaleNormalValue: number = 1;
+    export let clickAnimDuration: number = 100;
+    export let clickNormalProps = { scaleX: 1, scaleY: 1 }
+    export let clickDownProps = { scaleX: 1.2, scaleY: 1.2 }
 
     function pivotCenter(view) {
         view.x = view.x + view.width / 2 - view.pivotX;
@@ -11,9 +11,9 @@ module runtime {
         view.pivot(view.width / 2, view.height / 2);
     }
 
-    function viewScale(view, scale, time) {
+    function setViewProps(view, props, duration) {
         pivotCenter(view);
-        Laya.Tween.to(view, { scaleX: scale, scaleY: scale }, time);
+        Laya.Tween.to(view, props, duration);
     }
 
     function playClickSound(sound) {
@@ -25,30 +25,31 @@ module runtime {
     }
 
     export function bindClick(view, onClick?, onDown?, onUp?, onOut?) {
+        pivotCenter(view);
         view.offAll();
         view.on(Laya.Event.CLICK, view, () => {
             onClick && onClick();
             playClickSound(view.clickSound);
         });
         view.on(Laya.Event.MOUSE_DOWN, view, () => {
-            viewScale(view, view.scaleDownValue || scaleDownValue, view.scaleTime || scaleTime);
+            setViewProps(view, view.clickDownProps || clickDownProps, view.clickAnimDuration || clickAnimDuration);
             onDown && onDown();
         });
         view.on(Laya.Event.MOUSE_UP, view, () => {
-            viewScale(view, view.scaleNormalValue || scaleNormalValue, view.scaleTime || scaleTime);
+            setViewProps(view, view.clickNormalProps || clickNormalProps, view.clickAnimDuration || clickAnimDuration);
             onUp && onUp();
         });
         view.on(Laya.Event.MOUSE_OUT, view, () => {
-            viewScale(view, view.scaleNormalValue || scaleNormalValue, view.scaleTime || scaleTime);
+            setViewProps(view, view.clickNormalProps || clickNormalProps, view.clickAnimDuration || clickAnimDuration);
             onOut && onOut();
         });
     }
 
     export class btn extends Laya.Button {
 
-        public scaleTime = null;
-        public scaleDownValue = null;
-        public scaleNormalValue = null;
+        public clickAnimDuration = null;
+        public clickDownProps = null;
+        public clickNormalProps = null;
         public clickSound = null;
 
         constructor() {
@@ -60,9 +61,9 @@ module runtime {
 
     export class btn_img extends Laya.Image {
 
-        public scaleTime = null;
-        public scaleDownValue = null;
-        public scaleNormalValue = null;
+        public clickAnimDuration = null;
+        public clickDownProps = null;
+        public clickNormalProps = null;
         public clickSound = null;
 
         constructor() {
@@ -74,9 +75,9 @@ module runtime {
 
     export class btn_label extends Laya.Label {
 
-        public scaleTime = null;
-        public scaleDownValue = null;
-        public scaleNormalValue = null;
+        public clickAnimDuration = null;
+        public clickDownProps = null;
+        public clickNormalProps = null;
         public clickSound = null;
 
         constructor() {
@@ -88,9 +89,9 @@ module runtime {
 
     export class btn_sprite extends Laya.Sprite {
 
-        public scaleTime = null;
-        public scaleDownValue = null;
-        public scaleNormalValue = null;
+        public clickAnimDuration = null;
+        public clickDownProps = null;
+        public clickNormalProps = null;
         public clickSound = null;
 
         constructor() {
@@ -102,9 +103,9 @@ module runtime {
 
     export class btn_box extends Laya.Box {
 
-        public scaleTime = null;
-        public scaleDownValue = null;
-        public scaleNormalValue = null;
+        public clickAnimDuration = null;
+        public clickDownProps = null;
+        public clickNormalProps = null;
         public clickSound = null;
 
         constructor() {
@@ -112,6 +113,89 @@ module runtime {
             bindClick(this);
         }
 
+    }
+
+    export class page_view extends Laya.List {
+
+        private _isDown: boolean = false;
+        private _currentPage: number = 0;
+        private _onPageChange: (pageId: number) => void = null;
+
+        constructor() {
+            super();
+            this.on(Laya.Event.MOUSE_UP, this, this.onMouseUp);
+            this.on(Laya.Event.MOUSE_OUT, this, this.onMouseOut);
+            this.on(Laya.Event.MOUSE_DOWN, this, this.onMouseDown);
+            this.renderHandler = Laya.Handler.create(this, this.renderItem);
+        }
+
+        public get pageId() {
+            return this._currentPage;
+        }
+
+        public set pageId(n: number) {
+            this._currentPage = n;
+            if (this._currentPage < 0) {
+                this._currentPage = 0;
+            }
+            this.tweenTo(n);
+        }
+
+        public set onPageChangeHandler(handler: (pageId: number) => void) {
+            this._onPageChange = handler;
+        }
+
+        public get onPageChangeHandler() {
+            return this._onPageChange;
+        }
+
+        destroy() {
+            this.off(Laya.Event.MOUSE_UP, this, this.onMouseUp);
+            this.off(Laya.Event.MOUSE_OUT, this, this.onMouseOut);
+        }
+
+        onMouseDown() {
+            this._isDown = true;
+        }
+
+        onMouseUp(event) {
+            this._updatePage();
+            this._isDown = false;
+        }
+
+        onMouseOut(event) {
+            this._updatePage();
+            this._isDown = false;
+        }
+
+        private _updatePage() {
+            if (!this._isDown) {
+                return;
+            }
+            this.scrollBar.stopScroll();
+            let total = this._cellOffset > 0 ? this.totalPage + 1 : this.totalPage;
+            if (total > 1) {
+                let changeSize = this._cellSize / 6;
+                let sss = this._currentPage * this._cellSize;
+                if (Math.abs(this.scrollBar.value - sss) > changeSize) {
+                    if (this.scrollBar.value > sss) {
+                        this._currentPage++;
+                    } else {
+                        this._currentPage--;
+                    }
+                }
+                if (this._currentPage > total) {
+                    this._currentPage = total + 1;
+                }
+                if (this._currentPage < 0) {
+                    this._currentPage = 0;
+                }
+            }
+            this.tweenTo(this._currentPage);
+            if (this._onPageChange) {
+                this._onPageChange(this._currentPage);
+            }
+        }
     }
 
 }
