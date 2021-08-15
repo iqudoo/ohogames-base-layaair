@@ -7,7 +7,6 @@ import audio from './services/audio';
 import env from "./services/env";
 import js from "./services/js";
 import event from "./services/event";
-import pipeline from "./services/pipeline";
 import runtime from "./services/runtime";
 import message from "./services/message";
 import utils from './services/utils';
@@ -34,7 +33,6 @@ const OHOGame = Object.assign({}, {
     audio,
     event,
     runtime,
-    pipeline,
     navigator,
     utils,
     popup,

@@ -189,7 +189,7 @@ module runtime {
             if (lastCount < 0) {
                 lastCount = 0;
             }
-            if (this._loading && this.preCount >= lastCount) {
+            if (!this._loading && this.preCount >= lastCount) {
                 this._onLoadMoreHandler && this._onLoadMoreHandler(lastCount);
             }
         }

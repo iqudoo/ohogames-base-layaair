@@ -236,14 +236,6 @@ declare module OHOGame {
         function sendEvent(type: any, args?: Array<any>): void;
     }
 
-    /** pipeline */
-    module pipeline {
-        /** put */
-        function put(type: string, func: Function): void;
-        /** next */
-        function next(type: string): void;
-    }
-
     /** 默认点击效果集合 */
     module runtime {
 
