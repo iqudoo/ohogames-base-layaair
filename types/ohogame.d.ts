@@ -305,6 +305,13 @@ declare module OHOGame {
             public pageId: number;
         }
 
+        /** 上拉加载更多 */
+        class page_list extends Laya.List {
+            public loading: boolean;
+            public onLoadMoreHandler: (lastCount: number) => void;
+            public preCount: number;
+        }
+
     }
 
     /** 页面导航模块 */
