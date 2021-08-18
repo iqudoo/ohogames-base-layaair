@@ -21,6 +21,23 @@ const isConchApp = () => {
 /////  Version
 //////////////////////////
 
+let _app_version = "${app_version}";
+
+function getAppVersion(): string {
+    if (typeof _app_version === "string" && _app_version.indexOf('${') === 0) {
+        return;
+    }
+    return _app_version;
+}
+
+function setAppVersion(version) {
+    _app_version = version;
+}
+
+//////////////////////////
+/////  Version
+//////////////////////////
+
 let _lib_version = "${lib_version}";
 
 function getVersion(): string {
@@ -74,7 +91,7 @@ function setEnv(env) {
 
 function getEnv() {
     if (typeof _env === "string" && _env.indexOf('${') === 0) {
-        return "dev";
+        return;
     }
     return _env;
 }
@@ -117,6 +134,8 @@ export default {
     isLayaApp,
     isConchApp,
     getVersion,
+    setAppVersion,
+    getAppVersion,
     isDebug,
     setDebug,
     printError,

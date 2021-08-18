@@ -110,6 +110,10 @@ declare module OHOGame {
         function isConchApp(): boolean;
         /** 当前版本号 */
         function getVersion(): string;
+        /** 设置应用版本号 */
+        function setAppVersion(version: string): void;
+        /** 获取应用版本号 */
+        function getAppVersion(): string;
         /** 设置调试模式，开启后打印日志 */
         function setDebug(debug: boolean): void;
         /** 打印调试日志 */

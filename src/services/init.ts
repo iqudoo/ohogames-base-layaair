@@ -31,11 +31,12 @@ export function init(width: number, height: number, ...options) {
         return;
     }
     initScreen(false, width, height, ...options);
-    handleAdapter();
     callHookInit(width, height, ...options);
+    handleAdapter();
     _inited = true;
     env.printDebug(`init...`);
     env.printDebug(`offest: ${Screen.getOffestX()}, ${Screen.getOffestY()}`);
+    env.printDebug(`app_version: ${env.getAppVersion()}`);
     env.printDebug(`version: ${env.getVersion()}`);
     env.printDebug(`debug: ${env.isDebug()}`);
     env.printDebug(`env: ${env.getEnv()}`);
@@ -55,6 +56,7 @@ export function init3D(width: number, height: number, ...options) {
     _inited = true;
     env.printDebug(`init3D...`);
     env.printDebug(`offest: ${Screen.getOffestX()}, ${Screen.getOffestY()}`);
+    env.printDebug(`app_version: ${env.getAppVersion()}`);
     env.printDebug(`version: ${env.getVersion()}`);
     env.printDebug(`debug: ${env.isDebug()}`);
     env.printDebug(`env: ${env.getEnv()}`);
