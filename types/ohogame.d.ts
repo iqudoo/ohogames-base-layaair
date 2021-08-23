@@ -226,6 +226,8 @@ declare module OHOGame {
         function randomArray(source: any[], length?: number): any[];
         /** 随机从数组中获取一条数据 */
         function randomArrayItem(source: any[]): any;
+        /** 加载JSON文件 */
+        function loadJson(url: string, force: boolean): Promise<any>;
         /** 数据格式转换 */
         function toAny(source: any, def: any): any;
     }

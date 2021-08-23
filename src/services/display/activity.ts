@@ -54,6 +54,7 @@ export default class Activity extends Component {
     }
 
     static res = [];
+    static unpackFile = null;
     static single = false;
 
     public page = null;

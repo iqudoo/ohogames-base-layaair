@@ -2,12 +2,29 @@ import UIMgr from "../manager/uimgr";
 import Activity from "../display/activity";
 import env, { getClassName } from "../env";
 import { onNavigatorReady } from "./init";
+import { loadJson } from "../../utils/json";
 
 let _indexID = 1;
 
 function genID(obj) {
     let name = getClassName(obj) || "Activity"
     return `${name}$${_indexID++}`;
+}
+
+function getRes(unpackFile, res) {
+    if (unpackFile) {
+        return loadJson(unpackFile, true).catch(() => {
+            return [];
+        }).then(data => {
+            return [...res, ...data.map((item) => {
+                return {
+                    url: item,
+                    tyep: Laya.Loader.IMAGE
+                }
+            })];
+        });
+    }
+    return Promise.resolve(res);
 }
 
 export default class extends Laya.Component {
@@ -24,23 +41,27 @@ export default class extends Laya.Component {
         this._options = options;
         this._pageName = genID(this._options.page);
         env.printDebug("init", this._getPageName());
-        let res = this._options.page.res;
-        if (res && res.length > 0) {
-            Laya.loader.load(res, Laya.Handler.create(this, () => {
+        getRes(this._options.page.unpackFile, this._options.page.res || []).catch(() => {
+            return [];
+        }).then(res => {
+            if (res && res.length > 0) {
+                Laya.loader.load(res, Laya.Handler.create(this, () => {
+                    this._newActivity();
+                    setTimeout(() => { this._onLoaded(); }, 100);
+                    env.printDebug("onLoaded", this._getPageName());
+                }), Laya.Handler.create(this, (progress) => {
+                    env.printDebug("onLoadProgress", this._getPageName(), progress);
+                    this._onLoadProgress(progress);
+                }, null, false));
+            } else {
                 this._newActivity();
-                setTimeout(() => { this._onLoaded(); }, 100);
+                this._onLoaded();
                 env.printDebug("onLoaded", this._getPageName());
-            }), Laya.Handler.create(this, (progress) => {
-                env.printDebug("onLoadProgress", this._getPageName(), progress);
-                this._onLoadProgress(progress);
-            }, null, false));
-        } else {
-            this._newActivity();
-            this._onLoaded();
-            env.printDebug("onLoaded", this._getPageName());
-            env.printDebug("onLoadProgress", this._getPageName(), 1);
-        }
+                env.printDebug("onLoadProgress", this._getPageName(), 1);
+            }
+        })
     }
+
 
     _getPageName() {
         return this._pageName;

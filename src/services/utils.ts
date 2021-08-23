@@ -1,4 +1,5 @@
 import { toAny } from "../utils/any";
+import { loadJson } from "../utils/json";
 
 function randomUUID() {
     let _s4 = () => (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
@@ -53,5 +54,6 @@ export default {
     randomNumber,
     randomArray,
     randomArrayItem,
+    loadJson,
     toAny
 }
