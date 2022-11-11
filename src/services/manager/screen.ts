@@ -83,16 +83,11 @@ export function initScreen(is3D, isAlpha, width, height, ...options) {
     _design_height = height;
     if (_autoAdaption) {
         let { initHeight, initWidth } = size();
+        Config.isAlpha = isAlpha;
         if (is3D) {
-            if (isAlpha) {
-                Config.isAlpha = true;
-            }
             Laya3D.init.apply(this, [initWidth, initHeight, ...options]);
         } else {
             Laya.init.apply(this, [initWidth, initHeight, ...options]);
-        }
-        if (isAlpha) {
-            Laya.stage.bgColor = "none";
         }
         Laya.stage.scaleMode = Laya.Stage.SCALE_EXACTFIT;
         if (_autoDirection) {
@@ -104,6 +99,9 @@ export function initScreen(is3D, isAlpha, width, height, ...options) {
         }
         Laya.stage.alignH = Laya.Stage.ALIGN_CENTER;
         Laya.stage.alignV = Laya.Stage.ALIGN_MIDDLE;
+        if (isAlpha) {
+            Laya.stage.bgColor = "none";
+        }
     } else {
         if (is3D) {
             Laya3D.init.apply(this, [width, height, ...options]);

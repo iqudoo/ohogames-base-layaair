@@ -64,7 +64,7 @@ export class SpeakerChancel {
             amplitudeSum += currentAudioSpectrum[k];
         }
         if (amplitudeSum >= this.amplitudeThreshold) {
-            let formantSize = this._options && this._options.formantSize || 2;
+            let formantSize = this._options && this._options.formantSize || 3;
             let smoothedAudioSpectrum = peaks.convoluteDataAndFilter(currentAudioSpectrum, this.gaussianFilters, "Repet");
             let { peakValues, peakPositions } = peaks.findLocalLargestPeaks(smoothedAudioSpectrum, formantSize);
             let frequencyUnit = this.audioCtx.sampleRate / this.windowSize;
