@@ -88,14 +88,11 @@ export function initScreen(is3D, isAlpha, width, height, ...options) {
                 Config.isAlpha = true;
             }
             Laya3D.init.apply(this, [initWidth, initHeight, ...options]);
-            if (isAlpha) {
-                Laya.stage.bgColor = "none";
-            }
         } else {
             Laya.init.apply(this, [initWidth, initHeight, ...options]);
-            if (isAlpha) {
-                Laya.stage.bgColor = null;
-            }
+        }
+        if (isAlpha) {
+            Laya.stage.bgColor = "none";
         }
         Laya.stage.scaleMode = Laya.Stage.SCALE_EXACTFIT;
         if (_autoDirection) {
