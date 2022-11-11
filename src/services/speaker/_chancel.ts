@@ -64,19 +64,30 @@ export class SpeakerChancel {
             amplitudeSum += currentAudioSpectrum[k];
         }
         if (amplitudeSum >= this.amplitudeThreshold) {
-            let formantSize = this._options && this._options.formantSize || 3;
+            let formantFirst = this._options && this._options.formantFirst;
             let smoothedAudioSpectrum = peaks.convoluteDataAndFilter(currentAudioSpectrum, this.gaussianFilters, "Repet");
-            let { peakValues, peakPositions } = peaks.findLocalLargestPeaks(smoothedAudioSpectrum, formantSize);
-            let frequencyUnit = this.audioCtx.sampleRate / this.windowSize;
-            let formantArray = [];
-            for (var i = 0; i < peakPositions.length; i++) {
-                formantArray[i] = peakPositions[i] * (peakValues[i] / frequencyUnit);
+            if (formantFirst) {
+                let formantArray = [];
+                let { peakPositions } = peaks.findLocalLargestPeaks(smoothedAudioSpectrum, 1);
+                let frequencyUnit = this.audioCtx.sampleRate / this.windowSize;
+                for (var i = 0; i < peakPositions.length; i++) {
+                    formantArray[i] = peakPositions[i] * frequencyUnit;
+                }
+                return formantArray[0]
+            } else {
+                let formantArray = [];
+                let formantSize = this._options && this._options.formantSize || 3;
+                let { peakValues, peakPositions } = peaks.findLocalLargestPeaks(smoothedAudioSpectrum, formantSize);
+                let frequencyUnit = this.audioCtx.sampleRate / this.windowSize;
+                for (var i = 0; i < peakPositions.length; i++) {
+                    formantArray[i] = peakPositions[i] * (peakValues[i] / frequencyUnit);
+                }
+                let formantAverage = 0;
+                formantArray.forEach(formantVal => {
+                    formantAverage += formantVal;
+                });
+                return formantAverage / formantArray.length;
             }
-            let formantAverage = 0;
-            formantArray.forEach(formantVal => {
-                formantAverage += formantVal;
-            });
-            return formantAverage / formantArray.length;
         }
         return 0;
     }

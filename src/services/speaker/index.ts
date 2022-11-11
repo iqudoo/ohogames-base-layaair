@@ -116,7 +116,7 @@ class SpeakerController {
     }
 
     public getFormant() {
-        if (this.isSpeaking()) {
+        if (!this.isSpeaking()) {
             return 0;
         }
         return this._formant;

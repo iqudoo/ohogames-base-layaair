@@ -56,6 +56,8 @@ declare module OHOGame {
         fftSize?: number;
         /** 取共振峰的长度 */
         formantSize?: number;
+        /** 使用第一共振峰 */
+        formantFirst?: boolean;
     }
 
     /**
