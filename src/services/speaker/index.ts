@@ -43,6 +43,7 @@ class SpeakerController {
     _onError = null;
     _onProgress = null;
     _onComplete = null;
+    _options = null;
     _playTime = 0;
     _auidoUrl = null;
     _position = -1;
@@ -51,6 +52,10 @@ class SpeakerController {
     _speaking = false;
     _language = "chinese";
     _chancel: SpeakerChancel = null;
+
+    constructor(options) {
+        this._options = options;
+    }
 
     _update() {
         if (this._chancel) {
@@ -129,7 +134,7 @@ class SpeakerController {
             if (this._auidoUrl) {
                 this.stop();
                 this._playTime = Date.now();
-                this._chancel = chancel.playSpeak(this._auidoUrl, this._onError);
+                this._chancel = chancel.playSpeak(this._auidoUrl, this._onError, this._options);
                 looper.loop(this, this._update);
             }
         });
@@ -151,8 +156,8 @@ class SpeakerController {
 
 }
 
-function create() {
-    return new SpeakerController;
+function create(options) {
+    return new SpeakerController(options);
 }
 
 export default {

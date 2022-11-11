@@ -49,10 +49,19 @@ declare module OHOGame {
         onNextProgress?(progress: number): void;
     }
 
+    interface SpeakerOptions {
+        /** 取样频率 */
+        sampleRate?: number;
+        /** 傅里叶变换系数 */
+        fftSize?: number;
+        /** 取共振峰的长度 */
+        formantSize?: number;
+    }
+
     /**
      * 讲述人控制器
      */
-    interface SpeakerController{
+    interface SpeakerController {
         /** 音频地址 */
         readonly url: string;
         /** 当前播放进度 */
@@ -238,7 +247,7 @@ declare module OHOGame {
         /**
          * 创建讲述人
          */
-        function create(): SpeakerController;
+        function create(options?: SpeakerOptions): SpeakerController;
 
     }
 

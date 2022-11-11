@@ -19,13 +19,15 @@ import PopupView from "./services/display/popupview";
 import ToastView from "./services/display/toastview";
 import BaseView from "./services/display/baseview";
 import { getQueryString } from "./utils/query";
-import { init, init3D, start } from './services/init';
+import { init, init3D, start, setTransparent, setAdapterInfo } from './services/init';
 
 const OHOGame = Object.assign({}, {
     init,
     init3D,
     start,
     getQueryString,
+    setTransparent,
+    setAdapterInfo,
     env,
     js,
     bg,

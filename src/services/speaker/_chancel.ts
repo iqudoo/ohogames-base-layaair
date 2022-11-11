@@ -15,6 +15,7 @@ export class SpeakerChancel {
 
     private _audioUrl;
     private _onErrorCallback;
+    private _options;
 
     private audioCtx;
     private sourceNode;
@@ -23,14 +24,17 @@ export class SpeakerChancel {
     private gaussianFilters;
     private amplitudeThreshold;
 
-    constructor(url, onError) {
+    constructor(url, onError, options = {}) {
         this._audioUrl = url;
         this._onErrorCallback = onError;
+        this._options = options;
         this.amplitudeThreshold = 0.02;
-        this.audioCtx = new FixAudioContext({ sampleRate: 44100 });
+        this.audioCtx = new FixAudioContext({
+            sampleRate: this._options && this._options.sampleRate || 44100
+        });
         this.sourceNode = this.audioCtx.createBufferSource();
         this.analyserNode = this.audioCtx.createAnalyser();
-        this.analyserNode.fftSize = 2048;
+        this.analyserNode.fftSize = this._options && this._options.fftSize || 2048;
         this.windowSize = this.analyserNode.frequencyBinCount;
         this.gaussianFilters = peaks.generateGaussianFilter(7, 5);
         this.sourceNode.disconnect();
@@ -60,10 +64,11 @@ export class SpeakerChancel {
             amplitudeSum += currentAudioSpectrum[k];
         }
         if (amplitudeSum >= this.amplitudeThreshold) {
-            let formantArray = [];
+            let formantSize = this._options && this._options.formantSize || 2;
             let smoothedAudioSpectrum = peaks.convoluteDataAndFilter(currentAudioSpectrum, this.gaussianFilters, "Repet");
-            let { peakValues, peakPositions } = peaks.findLocalLargestPeaks(smoothedAudioSpectrum, 3);
+            let { peakValues, peakPositions } = peaks.findLocalLargestPeaks(smoothedAudioSpectrum, formantSize);
             let frequencyUnit = this.audioCtx.sampleRate / this.windowSize;
+            let formantArray = [];
             for (var i = 0; i < peakPositions.length; i++) {
                 formantArray[i] = peakPositions[i] * (peakValues[i] / frequencyUnit);
             }
@@ -108,8 +113,8 @@ export class SpeakerChancel {
 
 }
 
-function playSpeak(url, onError) {
-    let cancel = new SpeakerChancel(url, onError);
+function playSpeak(url, onError, options) {
+    let cancel = new SpeakerChancel(url, onError, options);
     cancel.play();
     _CHANCELS.push(cancel);
     return cancel;
