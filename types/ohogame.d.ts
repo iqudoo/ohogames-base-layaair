@@ -49,6 +49,36 @@ declare module OHOGame {
         onNextProgress?(progress: number): void;
     }
 
+    /**
+     * 讲述人控制器
+     */
+    interface SpeakerController{
+        /** 音频地址 */
+        readonly url: string;
+        /** 当前播放进度 */
+        readonly position: number;
+        /** 音频长度 */
+        readonly duration: number;
+        /** 开始播放回调 */
+        onPlay(callback: () => void): void;
+        /** 停止播放回调 */
+        onStop(callback: () => void): void;
+        /** 播放进度回调 */
+        onProgress(callback: (progress: { position: number, duration: number }) => void): void;
+        /** 播放完成回调 */
+        onComplete(callback: () => void): void;
+        /** 获取当前共振峰 */
+        getFormant(): number;
+        /** 获取当前元音 */
+        getVowel(): number;
+        /** 正在讲述中 */
+        isSpeaking(): boolean;
+        /** 开始讲述 */
+        speak(url: string, language?: string): void
+        /** 停止 */
+        stop(): void;
+    }
+
     /** 音频控制器 */
     interface AudioController {
         /** 音频地址 */
@@ -192,8 +222,22 @@ declare module OHOGame {
         function getPaddingBottom(): number;
         /** 设置触发适配阈值 */
         function setDeviation(deviation: number): void;
+        /** 设置是否自适应方向 */
+        function setAutoDirection(auto: boolean): void;
         /** 设置是否适配屏幕 */
-        function setAdaption(adaption: boolean): void;
+        function setAutoAdaption(adaption: boolean): void;
+    }
+
+    /**
+     * 讲述人
+     */
+    module speaker {
+
+        /**
+         * 创建讲述人
+         */
+        function create(): SpeakerController;
+
     }
 
     /** 音频模块 */
