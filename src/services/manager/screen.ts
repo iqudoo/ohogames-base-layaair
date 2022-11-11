@@ -78,15 +78,24 @@ function size() {
     }
 }
 
-export function initScreen(is3D, width, height, ...options) {
+export function initScreen(is3D, isAlpha, width, height, ...options) {
     _design_width = width;
     _design_height = height;
     if (_autoAdaption) {
         let { initHeight, initWidth } = size();
         if (is3D) {
+            if (isAlpha) {
+                Config.isAlpha = true;
+            }
             Laya3D.init.apply(this, [initWidth, initHeight, ...options]);
+            if (isAlpha) {
+                Laya.stage.bgColor = "none";
+            }
         } else {
             Laya.init.apply(this, [initWidth, initHeight, ...options]);
+            if (isAlpha) {
+                Laya.stage.bgColor = null;
+            }
         }
         Laya.stage.scaleMode = Laya.Stage.SCALE_EXACTFIT;
         if (_autoDirection) {

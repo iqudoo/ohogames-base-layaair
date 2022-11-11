@@ -15,7 +15,7 @@
     "types/**/*.d.ts",
     "libs/**/*.d.ts",
     "src/**/*.ts",
-    "src/services/speak/_chancel.js",
-    "src/services/speak/_chancel.js"
+    "src/services/speaker/_chancel.js",
+    "src/services/speaker/_chancel.js"
   ]
 }

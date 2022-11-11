@@ -115,6 +115,8 @@ declare module OHOGame {
         destroy(): void;
     }
 
+    /** 设置透明模式 */
+    function setTransparent(transparent: boolean): void;
     /** 设置适配信息 */
     function setAdapterInfo(adapterInfo: AdapterInfo): void;
     /** 初始化 for 2D */

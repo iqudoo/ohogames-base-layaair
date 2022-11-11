@@ -3,7 +3,7 @@ import "./polyfill";
 import bg from "./services/manager/bg";
 import eft from "./services/manager/eft";
 import screen from "./services/manager/screen";
-import speak from './services/speak';
+import speaker from './services/speaker';
 import audio from './services/audio';
 import env from "./services/env";
 import js from "./services/js";
@@ -31,7 +31,7 @@ const OHOGame = Object.assign({}, {
     bg,
     eft,
     screen,
-    speak,
+    speaker,
     audio,
     event,
     runtime,
