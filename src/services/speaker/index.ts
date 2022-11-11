@@ -116,11 +116,14 @@ class SpeakerController {
     }
 
     public getFormant() {
+        if (this.isSpeaking()) {
+            return 0;
+        }
         return this._formant;
     }
 
     public getVowel() {
-        return getVowelByFormant(this._formant, this._language);
+        return getVowelByFormant(this.getFormant(), this._language);
     }
 
     public isSpeaking() {
