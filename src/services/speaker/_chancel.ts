@@ -24,6 +24,7 @@ export class SpeakerChancel {
     private gaussianFilters;
     private amplitudeThreshold;
     private loadPromise: Promise<any>;
+    private stopped = false;
 
     constructor(url, onError, options = {}) {
         this._audioUrl = url;
@@ -96,6 +97,9 @@ export class SpeakerChancel {
 
     public play() {
         this.loadAudioRes().then((audioData) => {
+            if (this.stopped) {
+                return;
+            }
             this.audioCtx.decodeAudioData(audioData, (buffer) => {
                 this.sourceNode.buffer = buffer;
                 this.sourceNode.connect(this.analyserNode);
@@ -112,11 +116,13 @@ export class SpeakerChancel {
     }
 
     public stop() {
-        let indexOf = _CHANCELS.indexOf(this);
-        if (indexOf >= 0) {
-            _CHANCELS.splice(indexOf, 1);
-        }
+        this.stopped = true;
+        this._onErrorCallback = null;
         try {
+            let indexOf = _CHANCELS.indexOf(this);
+            if (indexOf >= 0) {
+                _CHANCELS.splice(indexOf, 1);
+            }
             if (this.sourceNode) {
                 this.sourceNode.stop();
             }
