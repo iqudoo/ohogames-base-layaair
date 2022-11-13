@@ -97,10 +97,10 @@ export class SpeakerChancel {
 
     public play() {
         this.loadAudioRes().then((audioData) => {
-            if (this.stopped) {
-                return;
-            }
             this.audioCtx.decodeAudioData(audioData, (buffer) => {
+                if (this.stopped) {
+                    return;
+                }
                 this.sourceNode.buffer = buffer;
                 this.sourceNode.connect(this.analyserNode);
                 this.sourceNode.connect(this.audioCtx.destination);
