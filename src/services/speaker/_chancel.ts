@@ -23,6 +23,7 @@ export class SpeakerChancel {
     private windowSize;
     private gaussianFilters;
     private amplitudeThreshold;
+    private loadPromise: Promise<any>;
 
     constructor(url, onError, options = {}) {
         this._audioUrl = url;
@@ -39,6 +40,7 @@ export class SpeakerChancel {
         this.gaussianFilters = peaks.generateGaussianFilter(7, 5);
         this.sourceNode.disconnect();
         this.sourceNode.connect(this.analyserNode);
+        this.play();
     }
 
     public get url() {
@@ -64,36 +66,36 @@ export class SpeakerChancel {
             amplitudeSum += currentAudioSpectrum[k];
         }
         if (amplitudeSum >= this.amplitudeThreshold) {
-            let formantFirst = this._options && this._options.formantFirst;
+            let formantArray = [];
             let smoothedAudioSpectrum = peaks.convoluteDataAndFilter(currentAudioSpectrum, this.gaussianFilters, "Repet");
-            if (formantFirst) {
-                let formantArray = [];
-                let { peakPositions } = peaks.findLocalLargestPeaks(smoothedAudioSpectrum, 1);
-                let frequencyUnit = this.audioCtx.sampleRate / this.windowSize;
-                for (var i = 0; i < peakPositions.length; i++) {
-                    formantArray[i] = peakPositions[i] * frequencyUnit;
-                }
-                return formantArray[0]
-            } else {
-                let formantArray = [];
-                let formantSize = this._options && this._options.formantSize || 3;
-                let { peakValues, peakPositions } = peaks.findLocalLargestPeaks(smoothedAudioSpectrum, formantSize);
-                let frequencyUnit = this.audioCtx.sampleRate / this.windowSize;
-                for (var i = 0; i < peakPositions.length; i++) {
-                    formantArray[i] = peakPositions[i] * (peakValues[i] / frequencyUnit);
-                }
-                let formantAverage = 0;
-                formantArray.forEach(formantVal => {
-                    formantAverage += formantVal;
-                });
-                return formantAverage / formantArray.length;
+            let { peakValues, peakPositions } = peaks.findLocalLargestPeaks(smoothedAudioSpectrum, 3);
+            let frequencyUnit = this.audioCtx.sampleRate / this.windowSize;
+            for (var i = 0; i < peakPositions.length; i++) {
+                formantArray[i] = peakPositions[i] * (peakValues[i] / frequencyUnit);
             }
+            let formantAverage = 0;
+            formantArray.forEach(formantVal => {
+                formantAverage += formantVal;
+            });
+            return formantAverage / formantArray.length;
         }
         return 0;
     }
 
+    private loadAudioRes() {
+        if (!this.loadPromise) {
+            this.loadPromise = new Promise((resolve, reject) => {
+                loadres.loadRes(this._audioUrl, resolve, () => {
+                    this.loadPromise = null;
+                    reject && reject();
+                });
+            });
+        }
+        return this.loadPromise;
+    }
+
     public play() {
-        loadres.loadRes(this._audioUrl, (audioData) => {
+        this.loadAudioRes().then((audioData) => {
             this.audioCtx.decodeAudioData(audioData, (buffer) => {
                 this.sourceNode.buffer = buffer;
                 this.sourceNode.connect(this.analyserNode);
@@ -103,7 +105,7 @@ export class SpeakerChancel {
                 let errorMsg = `error decoding audio data: ${this._audioUrl}`
                 this._onErrorCallback && this._onErrorCallback(errorMsg, e)
             });
-        }, () => {
+        }).catch(() => {
             let errorMsg = `load audio failure: ${this._audioUrl}`
             this._onErrorCallback && this._onErrorCallback(errorMsg)
         })
@@ -126,7 +128,6 @@ export class SpeakerChancel {
 
 function playSpeak(url, onError, options) {
     let cancel = new SpeakerChancel(url, onError, options);
-    cancel.play();
     _CHANCELS.push(cancel);
     return cancel;
 }

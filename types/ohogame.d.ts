@@ -49,15 +49,14 @@ declare module OHOGame {
         onNextProgress?(progress: number): void;
     }
 
+    /**
+     * 简述人配置
+     */
     interface SpeakerOptions {
         /** 取样频率 */
         sampleRate?: number;
         /** 傅里叶变换系数 */
         fftSize?: number;
-        /** 取共振峰的长度 */
-        formantSize?: number;
-        /** 使用第一共振峰 */
-        formantFirst?: boolean;
     }
 
     /**

@@ -3,6 +3,7 @@ import chancel, { SpeakerChancel } from './_chancel';
 
 const vowelsByFormantJP = ["i", "u", "e", "o", "a"];
 const vowelFormantFloorJP = [0, 500, 600, 900, 1200];
+
 const vowelsByFormantCN = ["i", "v", "u", "e", "o", "a"];
 const vowelFormantFloorCN = [0, 200, 500, 600, 900, 1200];
 
@@ -145,9 +146,6 @@ class SpeakerController {
 
     public stop() {
         if (!this._chancel) {
-            return;
-        }
-        if (!this._speaking) {
             return;
         }
         this._onStop && this._onStop();
