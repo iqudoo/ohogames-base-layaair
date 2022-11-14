@@ -113,6 +113,12 @@ export function initScreen(is3D, isAlpha, width, height, ...options) {
     initUI();
 }
 
+function resize() {
+    let { initHeight, initWidth } = size();
+    Laya.stage.width = initWidth;
+    Laya.stage.height = initHeight;
+}
+
 function getWidth() {
     return Laya.stage.width;
 }
@@ -208,6 +214,7 @@ function setAutoAdaption(adaption) {
 }
 
 export default {
+    resize,
     getWidth,
     getHeight,
     getScale,

@@ -1,4 +1,5 @@
 import { setFocus } from "../navigator/stack";
+import { onResize } from "../../utils/resize";
 import NavLoader from "../navigator/loader";
 import Screen from "./screen";
 
@@ -24,6 +25,9 @@ function _checkInit() {
         Laya.stage.addChild(_uiManager);
         Laya.stage.on(Laya.Event.RESIZE, null, () => {
             _resizeUI();
+        });
+        onResize(() => {
+            Screen.resize();
         });
     }
     _resizeUI();

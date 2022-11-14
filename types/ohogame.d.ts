@@ -198,6 +198,8 @@ declare module OHOGame {
 
     /** 屏幕 */
     module screen {
+        /** 刷新场景尺寸 */
+        function resize(): void;
         /** 获取屏幕缩放比例 */
         function getScale(): number;
         /** 获取画布宽度 */
@@ -235,9 +237,9 @@ declare module OHOGame {
         /** 设置触发适配阈值 */
         function setDeviation(deviation: number): void;
         /** 设置是否自适应方向 */
-        function setAutoDirection(auto: boolean): void;
+        function setAutoDirection(autoDirection: boolean): void;
         /** 设置是否适配屏幕 */
-        function setAutoAdaption(adaption: boolean): void;
+        function setAutoAdaption(autoAdaption: boolean): void;
     }
 
     /**
