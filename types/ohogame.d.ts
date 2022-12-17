@@ -125,6 +125,8 @@ declare module OHOGame {
         destroy(): void;
     }
 
+    /** 获取场景背景 */
+    function getBg(): Background;
     /** 设置透明模式 */
     function setTransparent(transparent: boolean): void;
     /** 设置适配信息 */
@@ -413,7 +415,7 @@ declare module OHOGame {
         static res: { url: string, type: string }[];
         /** single */
         static single: boolean;
-        
+
         /** page */
         protected page: any;
         /** params */

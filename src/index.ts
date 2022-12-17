@@ -27,6 +27,7 @@ const OHOGame = Object.assign({}, {
     getQueryString,
     setTransparent,
     setAdapterInfo,
+    getBg: screen.getBg,
     env,
     js,
     eft,
