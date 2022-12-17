@@ -178,11 +178,6 @@ class AudioController {
             this._chancel.stop();
             this._paused = false;
             this._playing = false;
-            if (this._music) {
-                Laya.SoundManager.stopMusic();
-            } else {
-                Laya.SoundManager.stopSound(this._auidoUrl);
-            }
             Laya.SoundManager.removeChannel(this._chancel);
             loop.clear(this, this._update);
             this._chancel = null;
