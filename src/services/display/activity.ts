@@ -9,8 +9,8 @@ export default class Activity extends Component {
 
             opts = null;
 
-            constructor(options) {
-                super(options);
+            constructor() {
+                super();
                 this.opts = opts || {};
                 Object.assign(this, this.opts);
                 NewAct.single = this.opts.single;
@@ -73,13 +73,11 @@ export default class Activity extends Component {
     public onDestroy?(): void;
     public onNextProgress?(progress): void;
 
-    constructor(options) {
+    constructor() {
         super(() => { this.back(); });
         this.ui = new Laya.Component;
         this.width = screen.getDesignWidth();
         this.height = screen.getDesignHeight();
-        this.params = Object.assign({}, options.params || {});
-        this.page = options.page;
     }
 
     //////////////////////////

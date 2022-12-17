@@ -1,6 +1,5 @@
 import "./adapter";
 import "./polyfill";
-import bg from "./services/manager/bg";
 import eft from "./services/manager/eft";
 import screen from "./services/manager/screen";
 import speaker from './services/speaker';
@@ -30,7 +29,6 @@ const OHOGame = Object.assign({}, {
     setAdapterInfo,
     env,
     js,
-    bg,
     eft,
     screen,
     speaker,

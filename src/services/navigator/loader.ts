@@ -31,7 +31,6 @@ export default class extends Laya.Component {
 
     private _options = null;
     private _activity: Activity = null;
-    private _isShow = false;
     private _isFocus = false;
     private _pageName = "";
 
@@ -71,10 +70,9 @@ export default class extends Laya.Component {
         if (this._activity) {
             return;
         }
-        this._activity = new this._options.page({
-            page: this._options.page,
-            params: this._options.params
-        });
+        this._activity = new this._options.page();
+        this._activity.page = this._options.page;
+        this._activity.params = Object.assign({}, this._options.params || {});
         this._activity["_ID"] = this._pageName;
         env.printDebug("newActivity", this._getPageName());
     }
@@ -108,10 +106,10 @@ export default class extends Laya.Component {
         if (this.visible) {
             return;
         }
-        if (this._isShow) {
+        if (this._activity.isShow) {
             return;
         }
-        this._isShow = true;
+        this._activity.isShow = true;
         var easeIn = this._activity.easeIn || Laya.Ease.linearIn;
         var duration = this._activity.duration || 0;
         var fromProps = this._activity.fromProps || {};
@@ -137,10 +135,10 @@ export default class extends Laya.Component {
         if (!this.visible) {
             return;
         }
-        if (!this._isShow) {
+        if (!this._activity.isShow) {
             return;
         }
-        this._isShow = false;
+        this._activity.isShow = false;
         var easeOut = this._activity.easeOut || Laya.Ease.linearIn;
         var duration = this._activity.duration || 0;
         var fromProps = this._activity.toProps || {};

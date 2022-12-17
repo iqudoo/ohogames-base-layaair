@@ -48,6 +48,18 @@ function _resizeUI() {
     }
     _uiManager.scaleX = Screen.getScale();
     _uiManager.scaleY = Screen.getScale();
+    for (let index = 0; index < _mainUILayer.numChildren; index++) {
+        let ui = _mainUILayer.getChildAt(index) as any;
+        if (ui && typeof ui._callOnResize == 'function'){
+            ui._callOnResize && ui._callOnResize();
+        }
+    }
+    for (let index = 0; index < _topUILayer.numChildren; index++) {
+        let ui = _topUILayer.getChildAt(index) as any;
+        if (ui && typeof ui._callOnResize == 'function'){
+            ui._callOnResize && ui._callOnResize();
+        }
+    }
 }
 
 export function initUI() {

@@ -1,32 +1,38 @@
 import Screen from "../manager/screen";
+import Background from "./background";
 import BaseView from "./baseview";
 
 export default class Component extends BaseView {
 
-    private _bgSprite = null;
     private _bgAlpha = 0.5;
     private _bgColor = '#000000';
     private _isTranslucent = true;
-    private _isShow = false;
     private _handleOnTouchOutside = null;
     private _canceledOnTouchOutside = false;
-    private _mask = false;
+    private _nonPenetrating = false;
     private _onEvent = null;
+    private _background: Background = null;
+    private _isShow = false;
 
     constructor(handleOnTouchOutside = null) {
         super();
-        this._handleOnTouchOutside = handleOnTouchOutside;
         this._onEvent = (e) => {
             if (this.isShow && this.canceledOnTouchOutside) {
                 this._handleOnTouchOutside && this._handleOnTouchOutside();
             }
             e.stopPropagation();
         }
-        this.initBg();
+        this._handleOnTouchOutside = handleOnTouchOutside;
+        this._background = new Background((bg: Background) => {
+            bg.x = -Screen.getOffestX();
+            bg.y = -Screen.getOffestY();
+        });
+        this.addChild(this._background);
+        this._refreshBg();
     }
 
     public get bg() {
-        return this._bgSprite;
+        return this._background;
     }
 
     public set isShow(isShow) {
@@ -37,36 +43,36 @@ export default class Component extends BaseView {
         return this._isShow;
     }
 
-    public set bgAlpha(bgAlpha) {
-        this._bgAlpha = bgAlpha;
-        this.refreshBg();
-    }
-
     public get bgAlpha() {
         return this._bgAlpha;
     }
 
-    public set bgColor(bgColor) {
-        this._bgColor = bgColor;
-        this.refreshBg();
+    public set bgAlpha(bgAlpha) {
+        this._bgAlpha = bgAlpha;
+        this._refreshBg();
     }
 
     public get bgColor() {
         return this._bgColor;
     }
 
-    public set isTranslucent(isTranslucent) {
-        this._isTranslucent = isTranslucent;
-        this.refreshBg();
+    public set bgColor(bgColor) {
+        this._bgColor = bgColor;
+        this._refreshBg();
     }
 
     public get isTranslucent() {
         return this._isTranslucent;
     }
 
+    public set isTranslucent(isTranslucent) {
+        this._isTranslucent = isTranslucent;
+        this._refreshBg();
+    }
+
     public set canceledOnTouchOutside(canceledOnTouchOutside) {
         this._canceledOnTouchOutside = canceledOnTouchOutside;
-        this.refreshCanceledOnTouchOutside();
+        this._refreshCanceledOnTouchOutside();
     }
 
     public get canceledOnTouchOutside() {
@@ -74,52 +80,32 @@ export default class Component extends BaseView {
     }
 
     public set nonPenetrating(nonPenetrating) {
-        this._mask = nonPenetrating;
-        this.refreshCanceledOnTouchOutside();
+        this._nonPenetrating = nonPenetrating;
+        this._refreshCanceledOnTouchOutside();
     }
 
     public get nonPenetrating() {
-        return this._mask;
+        return this._nonPenetrating;
     }
 
-    private refreshBg() {
-        if (!this._bgSprite) {
-            return;
-        }
-        this.resizeBg();
-        this.refreshCanceledOnTouchOutside();
-        this._bgSprite.alpha = this.bgAlpha;
-        this._bgSprite.graphics.clear();
-        if (!this.isTranslucent) {
-            this._bgSprite.graphics.drawRect(0, 0, this._bgSprite.width, this._bgSprite.height, this.bgColor);
-        }
-    }
-
-    private refreshCanceledOnTouchOutside() {
-        this._bgSprite && this._bgSprite.offAll();
+    private _refreshCanceledOnTouchOutside() {
+        this._background && this._background.offAll();
         if ((this.canceledOnTouchOutside || this.nonPenetrating) && this.ui) {
             this.ui.mouseThrough = true;
-            this._bgSprite && this._bgSprite.on(Laya.Event.CLICK, this, this._onEvent);
+            this._background && this._background.on(Laya.Event.CLICK, this, this._onEvent);
         }
     }
 
-    private initBg() {
-        if (this._bgSprite) {
-            return;
-        }
-        this._bgSprite = new Laya.Sprite();
-        this.addChildAt(this._bgSprite, 0);
-        setTimeout(() => { this.refreshBg() }, 0);
+    private _refreshBg() {
+        this._background.setBgAlpha(this.bgAlpha);
+        this._background.setBgColor(this.bgColor);
+        this._background.visible = !this.isTranslucent;
+        this._refreshCanceledOnTouchOutside();
     }
 
-    private resizeBg() {
-        if (!this._bgSprite) {
-            return;
-        }
-        this._bgSprite.x = -Screen.getOffestX();
-        this._bgSprite.y = -Screen.getOffestY();
-        this._bgSprite.width = Screen.getWidth();
-        this._bgSprite.height = Screen.getHeight();
+    protected _callOnResize() {
+        this._background
+            && this._background.resize();
     }
 
 }

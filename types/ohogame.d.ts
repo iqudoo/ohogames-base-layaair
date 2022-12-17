@@ -168,18 +168,6 @@ declare module OHOGame {
         function getEnv(): string;
     }
 
-    /** 背景 */
-    module bg {
-        /** 设置背景颜色 */
-        function setBgColor(color: string): void;
-        /** 设置背景图片 */
-        function setBgSkin(url: string, sizeGrid?: string): void;
-        /** 设置背景贴图 */
-        function setBgTexture(url: string): void;
-        /** 获取背景精灵 */
-        function getBgSprite(): Laya.Sprite;
-    }
-
     /** 消息 */
     module message {
         /** 发送消息 */
@@ -198,8 +186,11 @@ declare module OHOGame {
 
     /** 屏幕 */
     module screen {
+
         /** 刷新场景尺寸 */
         function resize(): void;
+        /** 获取场景背景 */
+        function getBg(): Background;
         /** 获取屏幕缩放比例 */
         function getScale(): number;
         /** 获取画布宽度 */
@@ -240,6 +231,7 @@ declare module OHOGame {
         function setAutoDirection(autoDirection: boolean): void;
         /** 设置是否适配屏幕 */
         function setAutoAdaption(autoAdaption: boolean): void;
+
     }
 
     /**
@@ -256,6 +248,7 @@ declare module OHOGame {
 
     /** 音频模块 */
     module audio {
+
         /** 播放背景音乐 */
         function playMusic(url: string, loops?: number): AudioController;
         /** 播放音效 */
@@ -270,10 +263,12 @@ declare module OHOGame {
         function setMusicVolume(volume: number): void;
         /** 设置音效音量 */
         function setSoundVolume(volume: number): void;
+
     }
 
     /** 工具模块 */
     module utils {
+
         /** 随机uuid */
         function randomUUID(): string;
         /** 生成随机数 */
@@ -288,16 +283,19 @@ declare module OHOGame {
         function loadJson(url: string, force: boolean): Promise<any>;
         /** 数据格式转换 */
         function toAny(source: any, def: any): any;
+
     }
 
     /** 事件 */
     module event {
+
         /** 注册事件 */
         function registeredEvent(type: any, func: Function, thisRef: any, index?: number): void
         /** 取消注册事件 */
         function removeEvent(type: any, func: Function, thisRef: any): void;
         /** 发送事件 */
         function sendEvent(type: any, args?: Array<any>): void;
+
     }
 
     /** 默认点击效果集合 */
@@ -384,22 +382,26 @@ declare module OHOGame {
 
     /** 弹窗 */
     module popup {
+
         /** 显示弹窗 */
         function showPopup(pop, params?, onHide?: (pop, result?: any) => void, alias?: string): void;
         /** 隐藏弹窗 */
         function hidePopup(pop, view?: any, result?: any, alias?: string): void;
+
     }
 
     /** 提示 */
     module toast {
+
         /** 显示提示内容 */
         function showToast(toast, params?, onHide?: (toast) => void): void;
         /** 隐藏提示内容 */
         function hideToast(toast, view?: any): void;
+
     }
 
     /** 页面组件 */
-    class Activity extends Laya.Component {
+    class Activity extends Component {
 
         /** create */
         static create(options: ActivityOptions): any;
@@ -411,12 +413,9 @@ declare module OHOGame {
         static res: { url: string, type: string }[];
         /** single */
         static single: boolean;
+        
         /** page */
         protected page: any;
-        /** bg */
-        protected readonly bg: Laya.Sprite;
-        /** ui */
-        protected ui: any;
         /** params */
         protected params: any;
         /** duration */
@@ -431,14 +430,6 @@ declare module OHOGame {
         protected toProps: obj;
         /** exitProps */
         protected exitProps: obj;
-        /** bgAlpha */
-        protected bgAlpha: number;
-        /** bgColor */
-        protected bgColor: string;
-        /** isTranslucent */
-        protected isTranslucent: boolean;
-        /** canceledOnTouchOutside */
-        protected canceledOnTouchOutside: boolean;
         /** activity on focus change */
         protected onFocus?(focus: boolean): void;
         /** activity on create */
@@ -464,12 +455,13 @@ declare module OHOGame {
         /** pop to top */
         protected popToTop(): void;
         /** constructor */
-        constructor(options: obj);
+        constructor();
 
     }
 
     /** 弹窗组件 */
-    class PopupView extends Laya.Component {
+    class PopupView extends Component {
+
         /** show */
         static show(params?: any, onHide?: (pop, result?: any) => void, alias?: string): void;
         /** signleShow */
@@ -482,10 +474,6 @@ declare module OHOGame {
         protected topLevel: boolean;
         /** pop */
         protected pop: any;
-        /** bg */
-        protected readonly bg: Laya.Sprite;
-        /** ui */
-        protected ui: any;
         /** params */
         protected params: any;
         /** duration */
@@ -512,14 +500,6 @@ declare module OHOGame {
         protected uiToProps: obj;
         /** uiExitProps */
         protected uiExitProps: obj;
-        /** bgAlpha */
-        protected bgAlpha: number;
-        /** bgColor */
-        protected bgColor: string;
-        /** isTranslucent */
-        protected isTranslucent: boolean;
-        /** canceledOnTouchOutside */
-        protected canceledOnTouchOutside: boolean;
         /** pop on show */
         protected onShow?(): void;
         /** pop on hide */
@@ -528,23 +508,18 @@ declare module OHOGame {
         protected hide(result?: any): void;
         /** constructor */
         constructor();
+
     }
 
     /** 提示内容组件 */
-    class ToastView extends Laya.Component {
+    class ToastView extends Component {
 
         /** show */
         static show(params?: any, onHide?: (toast) => void): void;
         /** hide */
         static hide(): void;
-        /** topLevel */
-        protected topLevel: boolean;
         /** toast */
         protected toast: any;
-        /** bg */
-        protected readonly bg: Laya.Sprite;
-        /** ui */
-        protected ui: any;
         /** params */
         protected params: any;
         /** duration */
@@ -561,14 +536,8 @@ declare module OHOGame {
         protected toProps: obj;
         /** exitProps */
         protected exitProps: obj;
-        /** bgAlpha */
-        protected bgAlpha: number;
-        /** bgColor */
-        protected bgColor: string;
-        /** isTranslucent */
-        protected isTranslucent: boolean;
-        /** canceledOnTouchOutside */
-        protected canceledOnTouchOutside: boolean;
+        /** topLevel */
+        protected topLevel: boolean;
         /** toast on show */
         protected onShow?(): void;
         /** toast on hide */
@@ -580,11 +549,51 @@ declare module OHOGame {
 
     }
 
+    class Component extends BaseView {
+
+        /** bg */
+        protected readonly bg: Background;
+        /** bgAlpha */
+        protected bgAlpha: number;
+        /** bgColor */
+        protected bgColor: string;
+        /** isTranslucent */
+        protected isTranslucent: boolean;
+        /** isTranslucent */
+        protected nonPenetrating: boolean;
+        /** canceledOnTouchOutside */
+        protected canceledOnTouchOutside: boolean;
+        /** constructor */
+        constructor(handleOnTouchOutside?: Function);
+
+    }
+
     /** 基础组件 */
     class BaseView extends Laya.Component {
 
         /** ui */
         protected ui: any;
+        /** constructor */
+        constructor();
+
+    }
+
+    class Background extends Laya.Component {
+
+        /** 重置大小 */
+        public resize(): void;
+        /** 设置背景透明度 */
+        public setBgAlpha(alpha: number): void;
+        /** 设置背景颜色 */
+        public setBgColor(color: string): void;
+        /** 设置背景图片 */
+        public setBgSkin(url: string, sizeGrid?: string): void;
+        /** 设置背景贴图 */
+        public setBgTexture(url: string): void;
+        /** 获取背景精灵 */
+        public getBgSprite(): Laya.Sprite;
+        /** constructor */
+        constructor(onResize?: (bg: Background) => void);
 
     }
 

@@ -1,6 +1,7 @@
-import { initBg } from "./bg";
+import Background from "../display/background";
 import { initUI } from "./uimgr";
 
+let _background: Background = null;
 let _padding_left = 0;
 let _padding_right = 0;
 let _padding_top = 0;
@@ -109,14 +110,22 @@ export function initScreen(is3D, isAlpha, width, height, ...options) {
             Laya.init.apply(this, [width, height, ...options]);
         }
     }
-    initBg();
+    _background = new Background;
+    Laya.stage.addChild(_background);
+    _background.resize();
     initUI();
 }
+
 
 function resize() {
     let { initHeight, initWidth } = size();
     Laya.stage.width = initWidth;
     Laya.stage.height = initHeight;
+    _background && _background.resize();
+}
+
+function getBg() {
+    return _background;
 }
 
 function getWidth() {
@@ -215,6 +224,7 @@ function setAutoAdaption(adaption) {
 
 export default {
     resize,
+    getBg,
     getWidth,
     getHeight,
     getScale,
