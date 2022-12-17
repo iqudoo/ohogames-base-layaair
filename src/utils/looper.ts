@@ -13,7 +13,7 @@ function removeItemForWhere(array, where) {
     }
 }
 
-class Looper {
+export class Looper {
 
     private _tasks = [];
     private _hasLoop = false;

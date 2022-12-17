@@ -4,6 +4,7 @@ import { initNavigator, setNavigatorReady } from "./navigator/init";
 import { callHookInit } from "./hook";
 
 let _inited = false;
+let _transparent = false;
 let _adapterInfo = null;
 
 function handleAdapter() {
@@ -18,6 +19,10 @@ function handleAdapter() {
     }
 }
 
+export function setTransparent(transparent) {
+    _transparent = transparent;
+}
+
 export function setAdapterInfo(adapterInfo) {
     _adapterInfo = adapterInfo;
 }
@@ -30,7 +35,7 @@ export function init(width: number, height: number, ...options) {
         env.printError('Please ensure that the \'Laya\' library has been introduced.');
         return;
     }
-    initScreen(false, width, height, ...options);
+    initScreen(false, _transparent, width, height, ...options);
     callHookInit(width, height, ...options);
     handleAdapter();
     _inited = true;
@@ -50,7 +55,7 @@ export function init3D(width: number, height: number, ...options) {
         env.printError('Please ensure that the \'Laya\' library has been introduced.');
         return;
     }
-    initScreen(true, width, height, ...options);
+    initScreen(true, _transparent, width, height, ...options);
     handleAdapter();
     callHookInit(width, height, ...options);
     _inited = true;

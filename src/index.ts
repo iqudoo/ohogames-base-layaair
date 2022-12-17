@@ -3,6 +3,7 @@ import "./polyfill";
 import bg from "./services/manager/bg";
 import eft from "./services/manager/eft";
 import screen from "./services/manager/screen";
+import speaker from './services/speaker';
 import audio from './services/audio';
 import env from "./services/env";
 import js from "./services/js";
@@ -18,18 +19,21 @@ import PopupView from "./services/display/popupview";
 import ToastView from "./services/display/toastview";
 import BaseView from "./services/display/baseview";
 import { getQueryString } from "./utils/query";
-import { init, init3D, start } from './services/init';
+import { init, init3D, start, setTransparent, setAdapterInfo } from './services/init';
 
 const OHOGame = Object.assign({}, {
     init,
     init3D,
     start,
     getQueryString,
+    setTransparent,
+    setAdapterInfo,
     env,
     js,
     bg,
     eft,
     screen,
+    speaker,
     audio,
     event,
     runtime,

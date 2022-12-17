@@ -9,7 +9,8 @@ let _padding_bottom = 0;
 let _design_width = 0;
 let _design_height = 0;
 let _deviation = 0;
-let _adaption = true;
+let _autoAdaption = true;
+let _autoDirection = false;
 
 function size() {
     let paddingWidth = _padding_left + _padding_right;
@@ -20,7 +21,17 @@ function size() {
     let initHeight = _design_height;
     let screenRatio = 1;
     let initRatio = 1;
-    if (initWidth < initHeight && clientWidth < clientHeight) { // 页面和游戏都是竖屏
+    if (!_autoDirection) {
+        screenRatio = clientHeight / clientWidth;
+        initRatio = initHeight / initWidth;
+        if (Math.abs(screenRatio / initRatio - 1) > _deviation) {
+            if (screenRatio > initRatio) {
+                initHeight = initWidth * screenRatio;
+            } else if (screenRatio < initRatio) {
+                initWidth = initHeight / screenRatio;
+            }
+        }
+    } else if (initWidth < initHeight && clientWidth < clientHeight) { // 页面和游戏都是竖屏
         screenRatio = clientHeight / clientWidth
         initRatio = initHeight / initWidth
         if (Math.abs(screenRatio / initRatio - 1) > _deviation) {
@@ -67,24 +78,30 @@ function size() {
     }
 }
 
-export function initScreen(is3D, width, height, ...options) {
+export function initScreen(is3D, isAlpha, width, height, ...options) {
     _design_width = width;
     _design_height = height;
-    if (_adaption) {
+    if (_autoAdaption) {
         let { initHeight, initWidth } = size();
+        Config.isAlpha = isAlpha;
         if (is3D) {
             Laya3D.init.apply(this, [initWidth, initHeight, ...options]);
         } else {
             Laya.init.apply(this, [initWidth, initHeight, ...options]);
         }
         Laya.stage.scaleMode = Laya.Stage.SCALE_EXACTFIT;
-        if (initWidth > initHeight) {
-            Laya.stage.screenMode = Laya.Stage.SCREEN_HORIZONTAL;
-        } else {
-            Laya.stage.screenMode = Laya.Stage.SCREEN_VERTICAL;
+        if (_autoDirection) {
+            if (initWidth > initHeight) {
+                Laya.stage.screenMode = Laya.Stage.SCREEN_HORIZONTAL;
+            } else {
+                Laya.stage.screenMode = Laya.Stage.SCREEN_VERTICAL;
+            }
         }
         Laya.stage.alignH = Laya.Stage.ALIGN_CENTER;
         Laya.stage.alignV = Laya.Stage.ALIGN_MIDDLE;
+        if (isAlpha) {
+            Laya.stage.bgColor = "none";
+        }
     } else {
         if (is3D) {
             Laya3D.init.apply(this, [width, height, ...options]);
@@ -94,6 +111,12 @@ export function initScreen(is3D, width, height, ...options) {
     }
     initBg();
     initUI();
+}
+
+function resize() {
+    let { initHeight, initWidth } = size();
+    Laya.stage.width = initWidth;
+    Laya.stage.height = initHeight;
 }
 
 function getWidth() {
@@ -161,7 +184,7 @@ function getScale() {
 }
 
 function getOffestX() {
-    if (!_adaption) {
+    if (!_autoAdaption) {
         return _padding_left;
     }
     let scale = getScale();
@@ -170,7 +193,7 @@ function getOffestX() {
 }
 
 function getOffestY() {
-    if (!_adaption) {
+    if (!_autoAdaption) {
         return _padding_top;
     }
     let scale = getScale();
@@ -182,11 +205,16 @@ function setDeviation(deviation) {
     _deviation = deviation;
 }
 
-function setAdaption(adaption) {
-    _adaption = adaption;
+function setAutoDirection(auto) {
+    _autoDirection = auto;
+}
+
+function setAutoAdaption(adaption) {
+    _autoAdaption = adaption;
 }
 
 export default {
+    resize,
     getWidth,
     getHeight,
     getScale,
@@ -205,5 +233,6 @@ export default {
     getPaddingTop,
     setPaddingBottom,
     getPaddingBottom,
-    setAdaption,
+    setAutoDirection,
+    setAutoAdaption,
 }

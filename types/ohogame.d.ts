@@ -49,6 +49,46 @@ declare module OHOGame {
         onNextProgress?(progress: number): void;
     }
 
+    /**
+     * 简述人配置
+     */
+    interface SpeakerOptions {
+        /** 取样频率 */
+        sampleRate?: number;
+        /** 傅里叶变换系数 */
+        fftSize?: number;
+    }
+
+    /**
+     * 讲述人控制器
+     */
+    interface SpeakerController {
+        /** 音频地址 */
+        readonly url: string;
+        /** 当前播放进度 */
+        readonly position: number;
+        /** 音频长度 */
+        readonly duration: number;
+        /** 开始播放回调 */
+        onPlay(callback: () => void): void;
+        /** 停止播放回调 */
+        onStop(callback: () => void): void;
+        /** 播放进度回调 */
+        onProgress(callback: (progress: { position: number, duration: number }) => void): void;
+        /** 播放完成回调 */
+        onComplete(callback: () => void): void;
+        /** 获取当前共振峰 */
+        getFormant(): number;
+        /** 获取当前元音 */
+        getVowel(): number;
+        /** 正在讲述中 */
+        isSpeaking(): boolean;
+        /** 开始讲述 */
+        speak(url: string, language?: string): void
+        /** 停止 */
+        stop(): void;
+    }
+
     /** 音频控制器 */
     interface AudioController {
         /** 音频地址 */
@@ -85,6 +125,8 @@ declare module OHOGame {
         destroy(): void;
     }
 
+    /** 设置透明模式 */
+    function setTransparent(transparent: boolean): void;
     /** 设置适配信息 */
     function setAdapterInfo(adapterInfo: AdapterInfo): void;
     /** 初始化 for 2D */
@@ -156,6 +198,8 @@ declare module OHOGame {
 
     /** 屏幕 */
     module screen {
+        /** 刷新场景尺寸 */
+        function resize(): void;
         /** 获取屏幕缩放比例 */
         function getScale(): number;
         /** 获取画布宽度 */
@@ -192,8 +236,22 @@ declare module OHOGame {
         function getPaddingBottom(): number;
         /** 设置触发适配阈值 */
         function setDeviation(deviation: number): void;
+        /** 设置是否自适应方向 */
+        function setAutoDirection(autoDirection: boolean): void;
         /** 设置是否适配屏幕 */
-        function setAdaption(adaption: boolean): void;
+        function setAutoAdaption(autoAdaption: boolean): void;
+    }
+
+    /**
+     * 讲述人
+     */
+    module speaker {
+
+        /**
+         * 创建讲述人
+         */
+        function create(options?: SpeakerOptions): SpeakerController;
+
     }
 
     /** 音频模块 */
