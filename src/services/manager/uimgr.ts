@@ -2,6 +2,7 @@ import { setFocus } from "../navigator/stack";
 import { onResize } from "../../utils/resize";
 import NavLoader from "../navigator/loader";
 import Screen from "./screen";
+import Component from "../display/component";
 
 let _inited = false;
 let _uiManager: Laya.Sprite;
@@ -49,15 +50,15 @@ function _resizeUI() {
     _uiManager.scaleX = Screen.getScale();
     _uiManager.scaleY = Screen.getScale();
     for (let index = 0; index < _mainUILayer.numChildren; index++) {
-        let ui = _mainUILayer.getChildAt(index) as any;
-        if (ui && typeof ui._callOnResize == 'function'){
-            ui._callOnResize && ui._callOnResize();
+        let ui = _mainUILayer.getChildAt(index);
+        if (ui && ui instanceof Component) {
+            ui.__callOnResize();
         }
     }
     for (let index = 0; index < _topUILayer.numChildren; index++) {
-        let ui = _topUILayer.getChildAt(index) as any;
-        if (ui && typeof ui._callOnResize == 'function'){
-            ui._callOnResize && ui._callOnResize();
+        let ui = _topUILayer.getChildAt(index);
+        if (ui && ui instanceof Component) {
+            ui.__callOnResize();
         }
     }
 }

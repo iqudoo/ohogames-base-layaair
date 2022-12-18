@@ -11,6 +11,7 @@ export default class Background extends Laya.Component {
     private _bgSkin = null;
     private _bgSizeGrid = null;
     private _bgTexture = null;
+    private _isTranslucent = true;
     private _bgType = 0;
 
     constructor(resize: Function = null) {
@@ -24,6 +25,8 @@ export default class Background extends Laya.Component {
     }
 
     private _drawBg() {
+        this._bgImage.visible = !this._isTranslucent;
+        this._bgSprite.visible = !this._isTranslucent;
         this._bgImage.alpha = this._bgAlpha;
         this._bgSprite.alpha = this._bgAlpha;
         if (this._bgType == 1) {
@@ -86,8 +89,13 @@ export default class Background extends Laya.Component {
         this._drawBg();
     }
 
-    public getBgSprite() {
-        return this._bgSprite;
+    public setTranslucent(translucent) {
+        this._isTranslucent = translucent;
+        this._drawBg();
+    }
+
+    public isTranslucent() {
+        return this._isTranslucent;
     }
 
 }

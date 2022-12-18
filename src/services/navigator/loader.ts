@@ -106,10 +106,10 @@ export default class extends Laya.Component {
         if (this.visible) {
             return;
         }
-        if (this._activity.isShow) {
+        if (this._activity.showed) {
             return;
         }
-        this._activity.isShow = true;
+        this._activity.__callSetShowed(true);
         var easeIn = this._activity.easeIn || Laya.Ease.linearIn;
         var duration = this._activity.duration || 0;
         var fromProps = this._activity.fromProps || {};
@@ -135,10 +135,10 @@ export default class extends Laya.Component {
         if (!this.visible) {
             return;
         }
-        if (!this._activity.isShow) {
+        if (!this._activity.showed) {
             return;
         }
-        this._activity.isShow = false;
+        this._activity.__callSetShowed(false);
         var easeOut = this._activity.easeOut || Laya.Ease.linearIn;
         var duration = this._activity.duration || 0;
         var fromProps = this._activity.toProps || {};

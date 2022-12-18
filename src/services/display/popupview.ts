@@ -43,10 +43,13 @@ export default class PopupView extends Component {
     public uiFromProps = null;
     public uiToProps = null;
     public uiExitProps = null;
-    
     public topLevel = false;
+
+    private _canceledOnTouchOutside = false;
+
     public onShow?(): void;
-    public onHide?(): void;
+    
+    public onHide?(popup: PopupView, result: any): void;
 
     public hide(result = null) {
         popup.hidePopup(this.popup, this, result, this.alias);
@@ -54,13 +57,22 @@ export default class PopupView extends Component {
 
     constructor() {
         super(() => {
-            this.hide();
+            if (this.canceledOnTouchOutside) {
+                this.hide();
+            }
         });
-        this.isTranslucent = false;
-        this.canceledOnTouchOutside = false;
         this.nonPenetrating = true;
         this.width = screen.getDesignWidth();
         this.height = screen.getDesignHeight();
+        this.bg.setTranslucent(false);
+    }
+
+    public set canceledOnTouchOutside(canceledOnTouchOutside) {
+        this._canceledOnTouchOutside = canceledOnTouchOutside;
+    }
+
+    public get canceledOnTouchOutside() {
+        return this._canceledOnTouchOutside;
     }
 
 }

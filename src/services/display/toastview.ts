@@ -22,6 +22,7 @@ export default class ToastView extends Component {
     public toProps = null;
     public exitProps = null;
     public topLevel = true;
+
     public onShow?(): void;
     public onHide?(): void;
 

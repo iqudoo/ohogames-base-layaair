@@ -1,8 +1,9 @@
 import UIMgr from "../manager/uimgr";
+import ToastView from "./toastview";
 
 let _toasts: { [key: string]: any[] } = {};
 
-function _pushToast(toast, view) {
+function _pushToast(toast, view: ToastView) {
     if (_toasts[toast]) {
         _toasts[toast].push(view);
     } else {
@@ -10,7 +11,7 @@ function _pushToast(toast, view) {
     }
 }
 
-function _popToast(toast, view) {
+function _popToast(toast, view: ToastView) {
     if (!_toasts[toast]) {
         return [];
     }
@@ -25,8 +26,8 @@ function _popToast(toast, view) {
 }
 
 function showToast(toast, params = null, onHide = null) {
-    var view = new toast;
-    view._on_hide = onHide;
+    var view = new toast as ToastView;
+    view['__hideCallback__'] = onHide;
     view.toast = toast;
     view.params = params || {};
     view.onShow && view.onShow();
@@ -39,14 +40,14 @@ function showToast(toast, params = null, onHide = null) {
     let displayDuration = view.displayDuration;
     Object.assign(view, from);
     Laya.Tween.to(view, to, duration, easeIn, Laya.Handler.create(this, () => {
-        view.isShow = true;
+        view.__callSetShowed(true);
     }), 0);
     if (displayDuration != -1) {
         Laya.Tween.to(view, exit, duration, easeOut, Laya.Handler.create(this, () => {
             if (view) {
                 _popToast(toast, view);
-                view._on_hide && view._on_hide(view.toast);
-                view.isShow = false;
+                view.__callSetShowed(false);
+                view['__hideCallback__'] && view['__hideCallback__'](view.toast);
                 view.onHide && view.onHide();
                 view.destroy();
             }
@@ -60,11 +61,11 @@ function showToast(toast, params = null, onHide = null) {
     }
 }
 
-function hideToast(toast, view = null) {
+function hideToast(toast, view: ToastView = null) {
     let list = _popToast(toast, view);
     list.forEach(view => {
         view._on_hide && view._on_hide(view.toast);
-        view.isShow = false;
+        view.showState = false;
         view.onHide && view.onHide();
         view.destroy();
     });

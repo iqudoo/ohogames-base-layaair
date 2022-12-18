@@ -111,6 +111,7 @@ export function initScreen(is3D, isAlpha, width, height, ...options) {
         }
     }
     _background = new Background;
+    _background.setTranslucent(false);
     Laya.stage.addChild(_background);
     _background.resize();
     initUI();

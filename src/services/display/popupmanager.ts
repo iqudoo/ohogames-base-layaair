@@ -1,12 +1,13 @@
 import { getClassName } from "../env";
 import UIMgr from "../manager/uimgr";
+import PopupView from "./popupview";
 
 let _popups = {};
 let _fromProps = { alpha: 0 }
 let _toProps = { alpha: 1 }
 let _exitProps = { alpha: 0 }
 
-function _showPopupAnim(popupView, cb) {
+function _showPopupAnim(popupView: PopupView, cb: Function) {
     // ui anim
     let uiDuration = popupView.uiDuration || 300;
     let uiFromProps = popupView.uiFromProps || {};
@@ -44,10 +45,10 @@ function _hidePopupAnim(popupView, cb) {
     }), Math.max(0, uiDuration - duration));
 }
 
-function _hidePopup(view, result) {
+function _hidePopup(view: PopupView, result) {
     _hidePopupAnim(view, () => {
-        view._onHide && view._onHide(view.popup, result);
-        view.isShow = false;
+        view.__callSetShowed(false);
+        view['__hideCallback__'] && view['__hideCallback__'](view.popup, result);
         view.onHide && view.onHide(view.popup, result);
         view.removeSelf && view.removeSelf();
         view.destroy && view.destroy();
@@ -55,20 +56,14 @@ function _hidePopup(view, result) {
     });
 }
 
-function _showPopup(view) {
-    _showPopupAnim(view, () => {
-        view.isShow = true;
-    });
-}
-
 function showPopup(popup, params = null, onHide = null, alias = "default") {
     var mapKey = `${alias}_${getClassName(popup)}`;
     let views = _popups[mapKey];
-    let view = new popup();
+    let view = new popup() as PopupView;
     view.alias = alias;
     view.popup = popup;
     view.params = params || {};
-    view._onHide = onHide;
+    view['__hideCallback__'] = onHide;
     if (views) {
         views.push(view);
     } else {
@@ -80,10 +75,12 @@ function showPopup(popup, params = null, onHide = null, alias = "default") {
         UIMgr.addViewToMainLayer(view);
     }
     view.onShow && view.onShow();
-    _showPopup(view);
+    _showPopupAnim(view, () => {
+        view.__callSetShowed(true);
+    });
 }
 
-function hidePopup(popup, view = null, result = {}, alias = "default") {
+function hidePopup(popup, view: PopupView = null, result = {}, alias = "default") {
     var mapKey = `${alias}_${getClassName(popup)}`;
     var views = _popups[mapKey];
     if (view) {

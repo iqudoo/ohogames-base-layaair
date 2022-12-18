@@ -16,18 +16,26 @@ import toast from "./services/display/toastmanager";
 import Activity from "./services/display/activity";
 import PopupView from "./services/display/popupview";
 import ToastView from "./services/display/toastview";
+import Component from "./services/display/component";
+import Background from "./services/display/background";
 import BaseView from "./services/display/baseview";
+import { PageView } from "./services/views/pageview";
+import { PageList } from "./services/views/pagelist";
 import { getQueryString } from "./utils/query";
 import { init, init3D, start, setTransparent, setAdapterInfo } from './services/init';
+
+function getBg() {
+    return screen.getBg();
+}
 
 const OHOGame = Object.assign({}, {
     init,
     init3D,
     start,
-    getQueryString,
+    getBg,
     setTransparent,
+    getQueryString,
     setAdapterInfo,
-    getBg: screen.getBg,
     env,
     js,
     eft,
@@ -44,7 +52,11 @@ const OHOGame = Object.assign({}, {
     Activity,
     PopupView,
     ToastView,
-    BaseView
+    Component,
+    Background,
+    BaseView,
+    PageView,
+    PageList
 });
 
 if (typeof window !== "undefined") {

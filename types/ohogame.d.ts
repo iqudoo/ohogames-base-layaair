@@ -19,11 +19,17 @@ declare module OHOGame {
 
     /** 初始化选项 */
     interface StartOptions {
+        /** mainPage */
         mainPage?: any;
+        /** commonRes */
         commonRes?: { url: string, type: string }[];
+        /** fileVersion */
         fileVersion?: string;
+        /** vConsole */
         vConsole?: boolean,
+        /** onLoadProgress */
         onLoadProgress?: (progress: number) => void;
+        /** onLoaded */
         onLoaded?: () => void;
     }
 
@@ -355,23 +361,11 @@ declare module OHOGame {
             public clickSound: string;
         }
 
-        /** 翻页控件 */
-        class page_view extends Laya.List {
-            public onPageChangeHandler: (pageId: number) => void;
-            public pageId: number;
-        }
-
-        /** 上拉加载更多 */
-        class page_list extends Laya.List {
-            public loading: boolean;
-            public onLoadMoreHandler: (lastCount: number) => void;
-            public preCount: number;
-        }
-
     }
 
     /** 页面导航模块 */
     module navigator {
+
         /** 打开新页面 */
         function navigate(page, params?: any, action?: Function): void;
         /** 关闭页面 */
@@ -380,6 +374,7 @@ declare module OHOGame {
         function popToTop(): void;
         /** 页面后退 */
         function pop(num?: number): void;
+
     }
 
     /** 弹窗 */
@@ -409,8 +404,6 @@ declare module OHOGame {
         static create(options: ActivityOptions): any;
         /** open */
         static open(params?: any, action?: () => void): void;
-        /** finish */
-        static finish(): void;
         /** res */
         static res: { url: string, type: string }[];
         /** single */
@@ -432,6 +425,7 @@ declare module OHOGame {
         protected toProps: obj;
         /** exitProps */
         protected exitProps: obj;
+
         /** activity on focus change */
         protected onFocus?(focus: boolean): void;
         /** activity on create */
@@ -444,18 +438,14 @@ declare module OHOGame {
         protected onDestroy?(): void;
         /** activity on next page load progress */
         protected onNextProgress?(progress: number): void;
+
         /** redirectTo */
         protected redirectTo(page, params?: any, action?: () => void, single?: boolean): void;
         /** navigate */
         protected navigate(page, params?: any, action?: () => void, single?: boolean): void;
         /** finish self */
         protected back(): void;
-        /** finish activity */
-        protected finish(page?, instance?: any): void;
-        /** pop */
-        protected pop(num?: number): void;
-        /** pop to top */
-        protected popToTop(): void;
+
         /** constructor */
         constructor();
 
@@ -472,8 +462,7 @@ declare module OHOGame {
         static pipeShow(params?: any, onHide?: (pop, result?: any) => void, alias?: string): void;
         /** hide */
         static hide(result?: any, alias?: string): void;
-        /** topLevel */
-        protected topLevel: boolean;
+
         /** pop */
         protected pop: any;
         /** params */
@@ -502,12 +491,18 @@ declare module OHOGame {
         protected uiToProps: obj;
         /** uiExitProps */
         protected uiExitProps: obj;
+        /** topLevel */
+        protected topLevel: boolean;
+        /** canceledOnTouchOutside */
+        protected canceledOnTouchOutside: boolean;
+
         /** pop on show */
         protected onShow?(): void;
         /** pop on hide */
         protected onHide?(): void;
         /** hide pop */
         protected hide(result?: any): void;
+
         /** constructor */
         constructor();
 
@@ -520,6 +515,7 @@ declare module OHOGame {
         static show(params?: any, onHide?: (toast) => void): void;
         /** hide */
         static hide(): void;
+
         /** toast */
         protected toast: any;
         /** params */
@@ -540,12 +536,14 @@ declare module OHOGame {
         protected exitProps: obj;
         /** topLevel */
         protected topLevel: boolean;
+
         /** toast on show */
         protected onShow?(): void;
         /** toast on hide */
         protected onHide?(): void;
         /** hide toast */
         protected hide(): void;
+
         /** constructor */
         constructor();
 
@@ -555,16 +553,15 @@ declare module OHOGame {
 
         /** bg */
         protected readonly bg: Background;
-        /** bgAlpha */
-        protected bgAlpha: number;
-        /** bgColor */
-        protected bgColor: string;
-        /** isTranslucent */
-        protected isTranslucent: boolean;
+        /** showed */
+        protected readonly showed: boolean;
+
         /** isTranslucent */
         protected nonPenetrating: boolean;
-        /** canceledOnTouchOutside */
-        protected canceledOnTouchOutside: boolean;
+
+        /** component on new */
+        protected onNew?(): void;
+
         /** constructor */
         constructor(handleOnTouchOutside?: Function);
 
@@ -575,6 +572,7 @@ declare module OHOGame {
 
         /** ui */
         protected ui: any;
+
         /** constructor */
         constructor();
 
@@ -592,11 +590,32 @@ declare module OHOGame {
         public setBgSkin(url: string, sizeGrid?: string): void;
         /** 设置背景贴图 */
         public setBgTexture(url: string): void;
-        /** 获取背景精灵 */
-        public getBgSprite(): Laya.Sprite;
+        /** 设置背景是否透明 */
+        public setTranslucent(translucent: boolean): void;
+        /** 当前背景是否透明 */
+        public isTranslucent(): boolean;
+        
         /** constructor */
         constructor(onResize?: (bg: Background) => void);
 
+    }
+
+    /** 翻页控件 */
+    class PageView extends Laya.List {
+        /** onPageChangeHandler  */
+        public onPageChangeHandler: (pageId: number) => void;
+        /** pageId  */
+        public pageId: number;
+    }
+
+    /** 上拉加载更多控件 */
+    class PageList extends Laya.List {
+        /** loading  */
+        public loading: boolean;
+        /** onLoadMoreHandler  */
+        public onLoadMoreHandler: (lastCount: number) => void;
+        /** preCount  */
+        public preCount: number;
     }
 
 }

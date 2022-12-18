@@ -49,10 +49,6 @@ export default class Activity extends Component {
         NavStack.navigate(this, params, action);
     }
 
-    static finish() {
-        NavStack.finish(this);
-    }
-
     static res = [];
     static unpackFile = null;
     static single = false;
@@ -97,18 +93,6 @@ export default class Activity extends Component {
 
     back() {
         NavStack.finish(this.page, this);
-    }
-
-    finish(page = this.page, instance = null) {
-        NavStack.finish(page, instance);
-    }
-
-    pop(number = 1) {
-        NavStack.pop(number);
-    }
-
-    popToTop() {
-        NavStack.popToTop();
     }
 
 }
