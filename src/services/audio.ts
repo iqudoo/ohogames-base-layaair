@@ -141,12 +141,10 @@ class AudioController {
                 if (this._music) {
                     this._chancel = Laya.SoundManager.playMusic(playUrl, loops, Laya.Handler.create(this, () => {
                         this._onComplete && this._onComplete();
-                        this.stop();
                     }), 0);
                 } else {
                     this._chancel = Laya.SoundManager.playSound(playUrl, loops, Laya.Handler.create(this, () => {
                         this._onComplete && this._onComplete();
-                        this.stop();
                     }), null, 0);
                 }
                 loop.loop(this, this._update);
